@@ -2,8 +2,9 @@
 /**
  * User: vedant
  */
-$input=$_POST['add-1'].'+'.$_POST['city'].'+'.$_POST['state'].'+'.$_POST['zip-code'];
+$input=$_POST['add-1'].' '.$_POST['city'].' '.$_POST['state'].' '.$_POST['zip-code'];
 $address=str_replace(" ", "+", $input);
+$db_address = $input;
 ?>
 <!DOCTYPE html>
 <html lang="en">
