@@ -2,7 +2,7 @@
 /**
  * User: vedant
  */
-$input=$_POST['add-1'].'+'.$_POST['add-2'].'+'.$_POST['city'].'+'.$_POST['state'].'+'.$_POST['zip-code'];
+$input=$_POST['add-1'].'+'.$_POST['city'].'+'.$_POST['state'].'+'.$_POST['zip-code'];
 $address=str_replace(" ", "+", $input);
 ?>
 <!DOCTYPE html>
@@ -39,9 +39,9 @@ $address=str_replace(" ", "+", $input);
         <div class="row">
             <div class="col-lg-6">
                 <div class="reg-page-signup">
+                    <h4 id="block"></h4>
                 <form role="form">
                     <div class="form-group">
-                        <label for="address">Registration</label>
                         <input type="text" class="form-control" id="username" placeholder="Username">
                     </div>
                     <div class="form-group">
@@ -79,7 +79,7 @@ $address=str_replace(" ", "+", $input);
                         <input type="text" class="form-control" id="phone" placeholder="Phone Number">
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn bg-btn">Sign Up!</button>
+                        <button type="submit" class="btn bg-btn">Apply!</button>
                     </div>
                 </form>
             </div>
@@ -88,7 +88,7 @@ $address=str_replace(" ", "+", $input);
                 <div class="reg-page-signup">
                 <iframe
                     width="460"
-                    height="363"
+                    height="395"
                     frameborder="0" style="border:0"
                     src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAe_SOKgsIY6U-TZwhI2xU5yg5Rg7t0ldc
     &q=<?php echo $address ?>">
@@ -103,5 +103,21 @@ $address=str_replace(" ", "+", $input);
     var winHeight=$(window).height();
     var navHeight=$(".navbar").height();
     $(".registration-page").height(winHeight-navHeight);
+</script>
+<script>
+    /* Google Maps geocoding API */
+    var geocodingAPI = "http://maps.googleapis.com/maps/api/geocode/json?address=<?php echo $address ?>&sensor=true";
+    console.log(geocodingAPI);
+    $.getJSON(geocodingAPI, function (json) {
+
+        // Set the variables from the results array
+        var block = json.results[0].address_components[0].long_name+' and '+json.results[0].address_components[1].long_name;
+        console.log(block);
+
+        // Set the table td text
+       $('#block').text('Your block is '+ block+'. Fill out the form below to register and apply.');
+    });
+
+    /* Google Maps geocoding API End*/
 </script>
 </body>
