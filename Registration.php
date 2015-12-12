@@ -1,9 +1,9 @@
 <?php
 /**
  * User: vedant
- * Date: 12/11/15
- * Time: 8:46 PM
  */
+$input=$_POST['add-1'].'+'.$_POST['add-2'].'+'.$_POST['city'].'+'.$_POST['state'].'+'.$_POST['zip-code'];
+$address=str_replace(" ", "+", $input);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -91,7 +91,7 @@
                     height="363"
                     frameborder="0" style="border:0"
                     src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAe_SOKgsIY6U-TZwhI2xU5yg5Rg7t0ldc
-    &q=Space+Needle,Seattle+WA">
+    &q=<?php echo $address ?>">
                 </iframe>
             </div>
             </div>
@@ -103,7 +103,5 @@
     var winHeight=$(window).height();
     var navHeight=$(".navbar").height();
     $(".registration-page").height(winHeight-navHeight);
-    //var mainPageSignupHeight=(winHeight/2)-($('.reg-page-signup').height())
-    //$(".reg-page-signup").css("margin-top",mainPageSignupHeight+"px");
 </script>
 </body>

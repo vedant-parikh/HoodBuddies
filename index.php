@@ -45,18 +45,18 @@
         <div class="main-page-signup">
             <div class="row">
             <div class="col-lg-12">
-                <form role="form">
+                <form role="form" action="registration.php" method="post">
                     <div class="form-group">
                         <label for="address">Address</label>
-                        <input type="text" class="form-control" id="add-1" placeholder="Address Line 1">
+                        <input type="text" class="form-control" id="add-1" name="add-1" placeholder="Address Line 1">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="add-2" placeholder="Addess Line 2">
+                        <input type="text" class="form-control" id="add-2" name="add-2" placeholder="Addess Line 2">
                     </div>
                     <div class="form-group city-state">
                         <div class="row">
                             <div class="col-lg-6">
-                            <input type="text" class="form-control" id="city" placeholder="City">
+                            <input type="text" class="form-control" id="city" name="city" placeholder="City">
                         </div>
                             <div class="col-lg-2">
                                 <select name="state" class="form-control">
@@ -114,7 +114,7 @@
                                 </select>
                             </div>
                             <div class="col-lg-4">
-                                <input type="text" class="form-control" id="zip-code" placeholder="Zip-Code">
+                                <input type="text" name="zip-code" class="form-control" id="zip-code" placeholder="Zip-Code">
                             </div>
                         </div>
                     </div>
