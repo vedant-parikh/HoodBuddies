@@ -68,7 +68,7 @@ if(isset($_POST['submit']))
             <div class="col-lg-4">
                 <h4 class="reg-heading">Welcome <?php echo $firstname ?>!</h4>
                 <form action="login.php" method="post">
-                    <button type="submit" class="btn bg-btn" style="float: right">Log Out</button>
+                    <button type="submit" class="btn bg-btn" style="float: right" name="logout">Log Out</button>
                 </form>
             </div>
     </div>
