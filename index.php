@@ -1,3 +1,51 @@
+<?php
+session_start();
+if(isset($_POST['login']))
+{
+    $Flag=true;
+    $Message="";
+    $username=filter_var($_POST['username'], FILTER_SANITIZE_STRING);
+    $pass=filter_var($_POST['password'], FILTER_SANITIZE_STRING);
+    if(!preg_match("/([A-Z-]{1,8})([a-z-]{1,8})([0-9-]{1,8})/",$pass))
+    {
+        $Message=$Message."Please Enter Valid Password<br>";
+        $Flag=false;
+    }
+    $mysqli = new mysqli("localhost", "root", "", "comcon");
+    if(mysqli_connect_errno())
+    {
+        die("Connection to database error:" . mysqli_connect_error() . "(" . mysqli_connect_errno(). ")" );
+    }
+    $call2=$mysqli->prepare('SELECT username, password FROM userdata WHERE username=?');
+    $call2->bind_param('s', $username);
+    $call2->execute();
+    $call2->store_result();
+    if($call2->num_rows>0) {
+        $call2->bind_result($username, $password);
+        while ($call2->fetch()) {
+            if ($password == $pass) {
+                $_SESSION['username'] = $username;
+                header("location:profile.php");
+                break;
+            } else {
+                $Message = $Message . "Password does not match. Please try again";
+                break;
+            }
+        }}
+    else
+        {
+            $Message = $Message . "No user record found. Please Sign-Up";
+        }
+
+
+    $call2->close();
+}
+else
+{
+    $Message="Please enter your address";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,15 +73,15 @@
             <a class="" href="#"><img class="logo-img" src="images/hoodicon.png" style="max-width: 50px; display: block; margin: 10px 0;" alt="Logo"><h4 class="logo-text">HoodBuddies</h4></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-                <form action="login.php" method="post">
+                <form action="index.php" method="post">
                     <ul class="nav navbar-nav navbar-right">
                 <li><div class="form-group">
-                        <input type="text" class="form-control" id="usr" placeholder="Username">
+                        <input type="text" class="form-control" id="usr" placeholder="Username" name="username">
                     </div></li>
                 <li><div class="form-group">
-                        <input type="password" class="form-control" id="usr" placeholder="Password">
+                        <input type="password" class="form-control" id="usr" placeholder="Password" name="password">
                     </div></li>
-                <li><button class="btn bg-btn">Login</button> </li>
+                <li><button type="submit" name="login" class="btn bg-btn">Login</button> </li>
                     </ul>
                 </form>
 
@@ -47,7 +95,7 @@
             <div class="col-lg-12">
                 <form role="form" action="registration.php" method="post">
                     <div class="form-group">
-                        <label for="address">Address</label>
+                        <label for="address"><?php echo $Message ?></label>
                         <input type="text" class="form-control" id="add-1" name="add-1" placeholder="Address Line 1">
                     </div>
                     <div class="form-group">
