@@ -40,11 +40,11 @@
         <div class="row">
             <div id='cssmenu'>
                 <ul>
-                    <li class='active'><a href='#'>Home</a></li>
+                    <li><a href='#'>Home</a></li>
                     <li><a href='profile.php'>Profile</a></li>
                     <li><a href='connections.php'>Connections</a></li>
                     <li><a href='map.php'>Map</a></li>
-                    <li><a href='messages.php'>Messages</a></li>
+                    <li class='active'><a href='#'>Messages</a></li>
                 </ul>
             </div>
             <hr class="menu-hr" />
