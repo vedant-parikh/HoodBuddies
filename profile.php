@@ -81,7 +81,7 @@ if(isset($_POST['submit']))
                     <li><a href='home.php'>Home</a></li>
                     <li class="active"><a href='#'>Profile</a></li>
                     <li><a href='connections.php'>Connections</a></li>
-                    <li><a href='map.php'>Map</a></li>
+                    <li><a href='maps.php'>Map</a></li>
                     <li><a href='messages.php'>Messages</a></li>
                 </ul>
             </div>

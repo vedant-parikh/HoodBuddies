@@ -1,3 +1,27 @@
+<?php
+session_start();
+$username = $_SESSION['username'];
+$mysqli = new mysqli("localhost", "root", "", "commcon");
+//check if connection is a success
+if(mysqli_connect_errno())
+{
+    die("Connection to database error:" . mysqli_connect_error() . "(" . mysqli_connect_errno(). ")" );
+}
+
+$query1=$mysqli->prepare('SELECT firstname,lastname,gender,address,birthdate,email,phone FROM userdata WHERE username=?');
+$query1->bind_param('s', $username);
+$query1->execute();
+$query1->store_result();
+$query1->bind_result($firstname,$lastname,$gender,$address,$birthdate,$email,$phone);
+$value =  $query1->fetch();
+$query1->close();
+
+if(isset($_POST['submit']))
+{
+    session_unset();
+    session_destroy();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +55,10 @@
                 <input class="form-control nav-search" name="search" placeholder="search here...">
             </div>
             <div class="col-lg-4">
-                <h4 class="reg-heading">Welcome zeal!</h4>
+                <h4 class="reg-heading">Welcome <?php echo $firstname ?>!</h4>
+                <form action="login.php" method="post">
+                    <button type="submit" class="btn bg-btn" style="float: right">Log Out</button>
+                </form>
             </div>
     </div>
 </nav>
@@ -43,7 +70,7 @@
                     <li><a href='#'>Home</a></li>
                     <li><a href='profile.php'>Profile</a></li>
                     <li><a href='connections.php'>Connections</a></li>
-                    <li><a href='map.php'>Map</a></li>
+                    <li><a href='maps.php'>Map</a></li>
                     <li class='active'><a href='#'>Messages</a></li>
                 </ul>
             </div>
