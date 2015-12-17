@@ -15,7 +15,9 @@
 <body>
 <nav class="navbar navbar-default navbar-static-top nav-bg">
     <div class="container" id="nav-height">
-        <div class="navbar-header">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only"></span>
                 <span class="icon-bar"></span>
@@ -24,32 +26,28 @@
             </button>
             <a class="" href="index.php"><img class="logo-img" src="images/hoodicon.png" style="max-width: 50px; display: block; margin: 10px 0;" alt="Logo"><h4 class="logo-text">HoodBuddies</h4></a>
         </div>
-        <h1 class="reg-heading">Sign Up</h1>
+            </div>
+            <div class="col-lg-4">
+                <input class="form-control nav-search" name="search" placeholder="search here...">
+            </div>
+            <div class="col-lg-4">
+                <h4 class="reg-heading">Welcome zeal!</h4>
+            </div>
     </div>
 </nav>
 <div class="profile-page">
-
+    <div class="container">
+        <div class="row">
+            <div id='cssmenu'>
+                <ul>
+                    <li class='active'><a href='#'>Home</a></li>
+                    <li><a href='#'>Inbox</a></li>
+                    <li><a href='#'>Neighbors</a></li>
+                    <li><a href='#'>Map</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
-<script>
-    var winHeight=$(window).height();
-    var navHeight=$(".navbar").height();
-    $(".registration-page").height(winHeight-navHeight);
-</script>
-<script>
-    /* Google Maps geocoding API */
-    var geocodingAPI = "http://maps.googleapis.com/maps/api/geocode/json?address=<?php echo $db_address ?>&sensor=true";
-    console.log(geocodingAPI);
-    $.getJSON(geocodingAPI, function (json) {
-
-        // Set the variables from the results array
-        var block = json.results[0].address_components[0].long_name+' and '+json.results[0].address_components[1].long_name;
-        console.log(block);
-
-        // Set the table td text
-       $('#block').text('Your block is '+ block+'. Fill out the form below to register and apply.');
-    });
-
-    /* Google Maps geocoding API End*/
-</script>
 </html>

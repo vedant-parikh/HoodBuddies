@@ -25,7 +25,7 @@ if(isset($_POST['login']))
         while ($call2->fetch()) {
             if ($password == $pass) {
                 $_SESSION['username'] = $username;
-                header("location:profile.php");
+                header("location:home.php");
                 break;
             } else {
                 $Message = $Message . "Password does not match. Please try again";
