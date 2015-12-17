@@ -32,7 +32,7 @@ if(isset($_POST['submit']))
         $Message=$Message."Please Enter Valid Mobile Number<br>";
         $Flag=false;
     }
-    $mysqli = new mysqli("localhost", "root", "", "comcon");
+    $mysqli = new mysqli("localhost", "root", "", "commcon");
 
 
 //check if connection is a success

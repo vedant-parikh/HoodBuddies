@@ -11,7 +11,7 @@ if(isset($_POST['login']))
         $Message=$Message."Please Enter Valid Password<br>";
         $Flag=false;
     }
-    $mysqli = new mysqli("localhost", "root", "", "comcon");
+    $mysqli = new mysqli("localhost", "root", "", "commcon");
     if(mysqli_connect_errno())
     {
         die("Connection to database error:" . mysqli_connect_error() . "(" . mysqli_connect_errno(). ")" );
