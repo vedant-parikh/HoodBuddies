@@ -93,10 +93,10 @@ else
         <div class="main-page-signup">
             <div class="row">
             <div class="col-lg-12">
-                <form role="form" action="registration.php" method="post">
+                <form role="form" action="registration.php" method="post" id="add_reg">
                     <div class="form-group">
                         <label for="address"><?php echo $Message ?></label>
-                        <input type="text" class="form-control" id="add-1" name="add-1" placeholder="Address Line 1">
+                        <input type="text" class="form-control" id="add-1" name="add-1" placeholder="Address Line 1" autofocus required title="Address 1 field is required.">
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control" id="add-2" name="add-2" placeholder="Addess Line 2">
@@ -104,7 +104,7 @@ else
                     <div class="form-group city-state">
                         <div class="row">
                             <div class="col-lg-6">
-                            <input type="text" class="form-control" id="city" name="city" placeholder="City">
+                            <input type="text" class="form-control" id="city" name="city" placeholder="City" autofocus required title="City field is required">
                         </div>
                             <div class="col-lg-2">
                                 <select name="state" class="form-control">
@@ -162,12 +162,13 @@ else
                                 </select>
                             </div>
                             <div class="col-lg-4">
-                                <input type="text" name="zip-code" class="form-control" id="zip-code" placeholder="Zip-Code">
+                                <input type="text" name="zip-code" class="form-control" id="zip-code" placeholder="Zip-Code" autofocus required title="City field is required">
+                                <div id="er3"></div>
                             </div>
                         </div>
                     </div>
                         <div class="form-group">
-                            <button type="submit" class="btn bg-btn">Sign Up!</button>
+                            <button type="submit" class="btn bg-btn" >Sign Up!</button>
                         </div>
                 </form>
             </div>

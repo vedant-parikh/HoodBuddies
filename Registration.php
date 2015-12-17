@@ -86,6 +86,8 @@ else {
     <title>HoodBuddies</title>
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -116,25 +118,25 @@ else {
                     <h4 id="block"></h4>
                 <form role="form" action="registration.php" method="post">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Username" autofocus required title="Username is required">
                     </div>
                     <div class="form-group">
-                        <input type="email" class="form-control" id="reg-email" name="reg-email" placeholder="Email Address">
+                        <input type="email" class="form-control" id="reg-email" name="reg-email" placeholder="Email Address" autofocus required title="Email Address is required">
                     </div>
                     <div class="form-group">
                         <div class="row">
                         <div class="col-lg-6">
-                            <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name">
+                            <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Firstname" autofocus required title="Firstname is required">
                         </div>
                         <div class="col-lg-6">
-                        <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name">
+                        <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Lastname" autofocus required title="Lastname is required">
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" id="reg-password" name="reg-password" placeholder="Password">
+                        <input type="password" class="form-control" id="reg-password" name="reg-password" placeholder="Password" autofocus required title="Password is required">
                     </div>
                     <div class="form-group">
                         <div class="row">
@@ -145,7 +147,7 @@ else {
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <input type="text" class="form-control" id="birthdate" name="birthdate" placeholder="Birth Date">
+                                <input type="text" class="form-control" id="birthdate" name="birthdate" placeholder="Birth Date" autofocus required title="Birthdate is required">
                             </div>
                         </div>
                     </div>
@@ -173,10 +175,14 @@ else {
         </div>
     </div>
 </div>
+</body>
 <script>
     var winHeight=$(window).height();
     var navHeight=$(".navbar").height();
     $(".registration-page").height(winHeight-navHeight);
+    $(function(){
+        $("#birthdate").datepicker({ dateFormat: 'yy-mm-dd' });
+    });
 </script>
 <script>
     /* Google Maps geocoding API */
@@ -190,13 +196,13 @@ else {
 
         // Set the table td text
         <?php
-       if(!isset($_POST['submit']))
-       echo "$('#block').text('Your block is '+ block+'. Fill out the form below to register and apply.');";
+        if(!isset($_POST['submit']))
+            echo "$('#block').text('Your block is '+ block+'. Fill out the form below to register and apply.');";
         else
-        echo "$('#block').html('".$Message."');";
-?>
+            echo "$('#block').html('".$Message."');";
+        ?>
     });
 
     /* Google Maps geocoding API End*/
 </script>
-</body>
+</html>
