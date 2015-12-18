@@ -9,6 +9,8 @@ if(isset($_POST['submit']))
     $Message="";
     $db_address = $_SESSION['address'];
     $address = str_replace(" ", "+", $db_address);
+    $block=$_POST['block'];
+    $hood= $_POST['neighbor'];
     $username=filter_var($_POST['username'], FILTER_SANITIZE_STRING);
     $email=filter_var($_POST['reg-email'], FILTER_SANITIZE_EMAIL);
     if (!filter_var($email, FILTER_VALIDATE_EMAIL))
@@ -54,16 +56,95 @@ if(isset($_POST['submit']))
     //echo $Message;
     if($Flag)
     {
+        $call3=$mysqli->prepare('SELECT blockname FROM block WHERE blockname=?');
+        $call3->bind_param('s', $block);
+        $call3->execute();
+        $call3->store_result();
+
+        if($call3->num_rows<1)
+        {
+            $call4=$mysqli->prepare('SELECT COUNT(*) FROM block');
+            $call4->execute();
+            $call4->store_result();
+            $call4->bind_result($count);
+            $value4 =  $call4->fetch();
+            $call4->close();
+
+            $call8=$mysqli->prepare('INSERT INTO block VALUES (?,?)');
+            $count++;
+            $call8->bind_param('is', $count,$block);
+            $call8->execute();
+            $call8->close();
+        }
+
+        $call5=$mysqli->prepare('SELECT neighborhood FROM neighborhood WHERE neighborhood=?');
+        $call5->bind_param('s', $hood);
+        $call5->execute();
+        $call5->store_result();
+
+        if($call5->num_rows<1)
+        {
+            $call6=$mysqli->prepare('SELECT COUNT(*) FROM neighborhood');
+            $call6->execute();
+            $call6->store_result();
+            $call6->bind_result($countn);
+            $value6 =  $query6->fetch();
+            $query6->close();
+
+            $call7=$mysqli->prepare('INSERT INTO neighborhood VALUES (?,?)');
+            $countn++;
+            $call7->bind_param('is', $countn, $hood);
+            $call7->execute();
+            $call7->close();
+        }
+
+        $call9=$mysqli->prepare('SELECT blockid FROM bnmap WHERE blockid=(SELECT blockid FROM block WHERE blockname=?)');
+        $call9->bind_param('s', $block);
+        $call9->execute();
+        $call9->store_result();
+
+        $call10=$mysqli->prepare('SELECT blockid FROM block WHERE blockname=?');
+        $call10->bind_param('s', $block);
+        $call10->execute();
+        $call10->store_result();
+        $call10->bind_result($blockid);
+        $value10 =  $call10->fetch();
+        $call10->close();
+
+        if($call9->num_rows<1)
+        {
+            $call11=$mysqli->prepare('SELECT nhid FROM neighborhood WHERE neighborhood=?');
+            $call11->bind_param('s', $hood);
+            $call11->execute();
+            $call11->store_result();
+            $call11->bind_result($nhid);
+            $value11 =  $call11->fetch();
+            $call11->close();
+
+            $call12=$mysqli->prepare('INSERT INTO bnmap VALUES (?,?)');
+            $call12->bind_param('ss', $blockid, $nhid);
+            $call12->execute();
+            $call12->close();
+        }
+
+        $call14=$mysqli->prepare('call blockapply(?,?,?)');
+        $approval='P';
+        $Message=$Message.$username.$blockid.$approval;
+        $call14->bind_param('sss', $username, $blockid, $approval);
+        $call14->execute();
+        $call14->close();
+
+
         $call=$mysqli->prepare('call usersignup(?,?,?,?,?,?,?,?,?)');
-        $call->bind_param('ssssssssi', $username, $firstname, $lastname,$pass, $gender, $db_address,$birthdate,$email,$mobile);
+        $call->bind_param('ssssssssi', $username, $firstname, $lastname, $pass, $gender, $db_address, $birthdate, $email, $mobile);
 
         if (!$call->execute()) {
             echo "CALL failed: (" . $mysqli->errno . ") " . $mysqli->error;
         }else {
             unset($_SESSION['address']);
-            //$Mesage=$Message."Registeration Successful";
+            $Message=$Message."Registeration Successful";
             $_SESSION['username']=$username;
-            header("location:preapproval.php");
+            //header("location:preapproval.php");
         }
         $call->close();
     }
@@ -155,6 +236,12 @@ else {
                         <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone Number">
                     </div>
                     <div class="form-group">
+                        <input type="hidden" class="form-control" id="block1" name="block" >
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" class="form-control" id="neighbor" name="neighbor" >
+                    </div>
+                    <div class="form-group">
                         <button type="submit" name="submit" class="btn bg-btn">Apply!</button>
                     </div>
                 </form>
@@ -192,6 +279,10 @@ else {
 
         // Set the variables from the results array
         var block = json.results[0].address_components[0].long_name+' and '+json.results[0].address_components[1].long_name;
+        var neighborhood = json.results[0].address_components[2].long_name;
+        document.getElementById("block1").value = block;
+        document.getElementById("neighbor").value = neighborhood;
+        //$('#neighbor').html(neighborhood);
         console.log(block);
 
         // Set the table td text

@@ -1,5 +1,7 @@
 <?php
 session_start();
+if(!isset($_SESSION['username']))
+    header("location:login.php");
 $username = $_SESSION['username'];
 $mysqli = new mysqli("localhost", "root", "", "commcon");
 //check if connection is a success
@@ -16,11 +18,57 @@ $query1->bind_result($firstname,$lastname,$gender,$address,$birthdate,$email,$ph
 $value =  $query1->fetch();
 $query1->close();
 
-if(isset($_POST['submit']))
+//fetch friends messages
+$msgtyp=2;
+$query2=$mysqli->prepare('call fetchmessage(?,?)');
+$query2->bind_param('si', $username, $msgtyp);
+$query2->execute();
+$query2->store_result();
+$query2->bind_result($msgfrom,$msgto,$msgtime,$msgtype,$title,$message,$flag);
+while($query2->fetch())
 {
-    session_unset();
-    session_destroy();
+    echo $msgfrom.$title.$message;
 }
+$query2->close();
+
+//fetch neighbors messages
+$msgtyp=3;
+$query3=$mysqli->prepare('call fetchmessage(?,?)');
+$query3->bind_param('si', $username, $msgtyp);
+$query3->execute();
+$query3->store_result();
+$query3->bind_result($msgfrom,$msgto,$msgtime,$msgtype,$title,$message,$flag);
+while($query3->fetch())
+{
+    echo $msgfrom.$title.$message;
+}
+$query3->close();
+
+//fetch block messages
+$msgtyp=4;
+$query4=$mysqli->prepare('call fetchmessage(?,?)');
+$query4->bind_param('si', $username, $msgtyp);
+$query4->execute();
+$query4->store_result();
+$query4->bind_result($msgfrom,$msgto,$msgtime,$msgtype,$title,$message,$flag);
+while($query4->fetch())
+{
+    echo $msgfrom.$title.$message;
+}
+$query4->close();
+
+//fetch hood messages
+$msgtyp=5;
+$query5=$mysqli->prepare('call fetchmessage(?,?)');
+$query5->bind_param('si', $username, $msgtyp);
+$query5->execute();
+$query5->store_result();
+$query5->bind_result($msgfrom,$msgto,$msgtime,$msgtype,$title,$message,$flag);
+while($query5->fetch())
+{
+    echo $msgfrom.$title.$message;
+}
+$query5->close();
 
 ?>
 <!DOCTYPE html>
@@ -58,7 +106,7 @@ if(isset($_POST['submit']))
             <div class="col-lg-4">
                 <h4 class="reg-heading">Welcome <?php echo $firstname ?>!</h4>
                 <form action="login.php" method="post">
-                    <button type="submit" class="btn bg-btn" style="float: right">Log Out</button>
+                    <button type="submit" class="btn bg-btn" name="logout" style="float: right">Log Out</button>
                 </form>
             </div>
     </div>
