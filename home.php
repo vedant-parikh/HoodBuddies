@@ -18,57 +18,6 @@ $query1->bind_result($firstname,$lastname,$gender,$address,$birthdate,$email,$ph
 $value =  $query1->fetch();
 $query1->close();
 
-//fetch friends messages
-$msgtyp=2;
-$query2=$mysqli->prepare('call fetchmessage(?,?)');
-$query2->bind_param('si', $username, $msgtyp);
-$query2->execute();
-$query2->store_result();
-$query2->bind_result($msgfrom,$msgto,$msgtime,$msgtype,$title,$message,$flag);
-while($query2->fetch())
-{
-    echo $msgfrom.$title.$message;
-}
-$query2->close();
-
-//fetch neighbors messages
-$msgtyp=3;
-$query3=$mysqli->prepare('call fetchmessage(?,?)');
-$query3->bind_param('si', $username, $msgtyp);
-$query3->execute();
-$query3->store_result();
-$query3->bind_result($msgfrom,$msgto,$msgtime,$msgtype,$title,$message,$flag);
-while($query3->fetch())
-{
-    echo $msgfrom.$title.$message;
-}
-$query3->close();
-
-//fetch block messages
-$msgtyp=4;
-$query4=$mysqli->prepare('call fetchmessage(?,?)');
-$query4->bind_param('si', $username, $msgtyp);
-$query4->execute();
-$query4->store_result();
-$query4->bind_result($msgfrom,$msgto,$msgtime,$msgtype,$title,$message,$flag);
-while($query4->fetch())
-{
-    echo $msgfrom.$title.$message;
-}
-$query4->close();
-
-//fetch hood messages
-$msgtyp=5;
-$query5=$mysqli->prepare('call fetchmessage(?,?)');
-$query5->bind_param('si', $username, $msgtyp);
-$query5->execute();
-$query5->store_result();
-$query5->bind_result($msgfrom,$msgto,$msgtime,$msgtype,$title,$message,$flag);
-while($query5->fetch())
-{
-    echo $msgfrom.$title.$message;
-}
-$query5->close();
 
 ?>
 <!DOCTYPE html>
@@ -86,6 +35,7 @@ $query5->close();
     <link rel="icon" sizes="180x180" href="images/apple-icon-180x180.png">
 </head>
 <body>
+<div id="bc">
 <nav class="navbar navbar-default navbar-static-top nav-bg">
     <div class="container" id="nav-height">
         <div class="row">
@@ -125,7 +75,94 @@ $query5->close();
             </div>
             <hr class="menu-hr" />
         </div>
-    </div>
+        <?php
+        $query2=$mysqli->prepare('SELECT * FROM conversation WHERE msgto=? ORDER BY msgtime DESC');
+        $query2->bind_param('s', $username);
+        $query2->execute();
+        $query2->store_result();
+        $query2->bind_result($msgfrom,$msgto,$msgtime,$msgtype,$title,$message,$flag);
+        while($query2->fetch())
+        {
+            if($msgtype==1)
+                continue;
+            ?>
+        <div class="message-page">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="msg-name">
+                        <h4><a href="#"><?php echo $msgfrom ?></a></h4>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="msg-text">
+                        <h4 class="title"><?php echo $title ?></h4>
+                        <hr class="menu-hr">
+                        <h5 class="text"><?php echo $message; ?></h5>
+                        <div class="margin-bottom"></div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="msg-time">
+                        <h5><?php echo $msgtime ?></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <?php
+        }
+        $query2->close();
+        ?>
+            <!--  <div class="message-page">
+                  <div class="row">
+                      <div class="col-lg-3">
+                          <div class="msg-name">
+                              <h4><a href="#"> Zeal</a></h4>
+                          </div>
+                      </div>
+                      <div class="col-lg-6">
+                          <div class="msg-text">
+                              <h4 class="title">hello</h4>
+                              <hr class="menu-hr">
+                              <h5 class="text">hellow</h5>
+                              <div class="margin-bottom"></div>
+                          </div>
+                      </div>
+                      <div class="col-lg-3">
+                          <div class="msg-time">
+                              <h4></h4>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-lg-3">
+                          <div class="msg-name">
+                              <h4>Zeal</h4>
+                          </div>
+                      </div>
+                      <div class="col-lg-6">
+                          <div class="msg-text">
+                              <h4 class="title">hello</h4>
+                              <hr class="menu-hr">
+                              <h5 class="text">hellow</h5>
+                          </div>
+                      </div>
+                      <div class="col-lg-3">
+                          <div class="msg-time">
+                              <h4></h4>
+                          </div>
+                      </div>
+                  </div>
+              </div> -->
+
+
+</div>
 </div>
 </body>
+<script>
+    $(document).ready(function() {
+        $.get('home.php', function (data) {
+            $('#bc').html(data);
+        });
+    });
+</script>
 </html>
