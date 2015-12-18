@@ -63,16 +63,8 @@ if(isset($_POST['submit']))
 
         if($call3->num_rows<1)
         {
-            $call4=$mysqli->prepare('SELECT COUNT(*) FROM block');
-            $call4->execute();
-            $call4->store_result();
-            $call4->bind_result($count);
-            $value4 =  $call4->fetch();
-            $call4->close();
-
-            $call8=$mysqli->prepare('INSERT INTO block VALUES (?,?)');
-            $count++;
-            $call8->bind_param('is', $count,$block);
+            $call8=$mysqli->prepare('INSERT INTO block (blockname) VALUES (?)');
+            $call8->bind_param('s', $block);
             $call8->execute();
             $call8->close();
         }
@@ -84,16 +76,9 @@ if(isset($_POST['submit']))
 
         if($call5->num_rows<1)
         {
-            $call6=$mysqli->prepare('SELECT COUNT(*) FROM neighborhood');
-            $call6->execute();
-            $call6->store_result();
-            $call6->bind_result($countn);
-            $value6 =  $query6->fetch();
-            $query6->close();
 
-            $call7=$mysqli->prepare('INSERT INTO neighborhood VALUES (?,?)');
-            $countn++;
-            $call7->bind_param('is', $countn, $hood);
+            $call7=$mysqli->prepare('INSERT INTO neighborhood (neighborhood) VALUES (?)');
+            $call7->bind_param('s', $hood);
             $call7->execute();
             $call7->close();
         }
@@ -122,17 +107,17 @@ if(isset($_POST['submit']))
             $call11->close();
 
             $call12=$mysqli->prepare('INSERT INTO bnmap VALUES (?,?)');
-            $call12->bind_param('ss', $blockid, $nhid);
+            $call12->bind_param('ii', $blockid, $nhid);
             $call12->execute();
             $call12->close();
         }
 
-        $call14=$mysqli->prepare('call blockapply(?,?,?)');
+        $call14=$mysqli->query('INSERT INTO brequest (fromuser, blockid, approvaltype) VALUES ("'.$username.'",'.$blockid.',"P")');
         $approval='P';
         $Message=$Message.$username.$blockid.$approval;
-        $call14->bind_param('sss', $username, $blockid, $approval);
-        $call14->execute();
-        $call14->close();
+        //$call14->bind_param('sis', $username, $blockid, $approval);
+        //$call14->execute();
+        //$call14->close();
 
 
         $call=$mysqli->prepare('call usersignup(?,?,?,?,?,?,?,?,?)');
