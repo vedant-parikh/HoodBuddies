@@ -1,24 +1,21 @@
 <?php
 session_start();
-if(!isset($_SESSION['username']))
+if (!isset($_SESSION['username']))
     header("location:login.php");
 $username = $_SESSION['username'];
 $mysqli = new mysqli("localhost", "root", "", "commcon");
 //check if connection is a success
-if(mysqli_connect_errno())
-{
-    die("Connection to database error:" . mysqli_connect_error() . "(" . mysqli_connect_errno(). ")" );
+if (mysqli_connect_errno()) {
+    die("Connection to database error:" . mysqli_connect_error() . "(" . mysqli_connect_errno() . ")");
 }
 
-$query1=$mysqli->prepare('SELECT firstname,lastname,gender,address,birthdate,email,phone FROM userdata WHERE username=?');
+$query1 = $mysqli->prepare('SELECT firstname,lastname,gender,address,birthdate,email,phone FROM userdata WHERE username=?');
 $query1->bind_param('s', $username);
 $query1->execute();
 $query1->store_result();
-$query1->bind_result($firstname,$lastname,$gender,$address,$birthdate,$email,$phone);
-$value =  $query1->fetch();
+$query1->bind_result($firstname, $lastname, $gender, $address, $birthdate, $email, $phone);
+$value = $query1->fetch();
 $query1->close();
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,13 +37,16 @@ $query1->close();
         <div class="row">
             <div class="col-lg-4">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
                         <span class="sr-only"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="" href="index.php"><img class="logo-img" src="images/hoodicon.png" style="max-width: 50px; display: block; margin: 10px 0;" alt="Logo"><h4 class="logo-text">HoodBuddies</h4></a>
+                    <a class="" href="index.php"><img class="logo-img" src="images/hoodicon.png"
+                                                      style="max-width: 50px; display: block; margin: 10px 0;"
+                                                      alt="Logo"><h4 class="logo-text">HoodBuddies</h4></a>
                 </div>
             </div>
             <div class="col-lg-4">
@@ -72,7 +72,7 @@ $query1->close();
                     <li><a href='messages.php'>Messages</a></li>
                 </ul>
             </div>
-            <hr class="menu-hr" />
+            <hr class="menu-hr"/>
         </div>
         <div class="message-page">
         </div>
@@ -82,13 +82,13 @@ $query1->close();
 <script>
     var timestamp = 0;
     //setTimeout("location.reload(true);",5000);
-    setInterval(function(){
+    setInterval(function () {
         $.ajax({
-            url:"realtime.php",
-            type:"GET",
-            dataType:"html",
-            success:function(data){
-                    $('.message-page').html(data);
+            url: "realtime.php",
+            type: "GET",
+            dataType: "html",
+            success: function (data) {
+                $('.message-page').html(data);
             }
         });
     }, 1000);

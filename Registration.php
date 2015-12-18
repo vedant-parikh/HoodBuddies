@@ -3,139 +3,128 @@
  * User: vedant
  */
 session_start();
-if(isset($_POST['submit']))
-{
-    $Flag=true;
-    $Message="";
+if (isset($_POST['submit'])) {
+    $Flag = true;
+    $Message = "";
     $db_address = $_SESSION['address'];
     $address = str_replace(" ", "+", $db_address);
-    $block=$_POST['block'];
-    $hood= $_POST['neighbor'];
-    $username=filter_var($_POST['username'], FILTER_SANITIZE_STRING);
-    $email=filter_var($_POST['reg-email'], FILTER_SANITIZE_EMAIL);
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-    {
-        $Message=$Message."$email is not a valid email address<br>";
-        $Flag=false;
+    $block = $_POST['block'];
+    $hood = $_POST['neighbor'];
+    $username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
+    $email = filter_var($_POST['reg-email'], FILTER_SANITIZE_EMAIL);
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $Message = $Message . "$email is not a valid email address<br>";
+        $Flag = false;
     }
-    $firstname=filter_var($_POST['firstname'], FILTER_SANITIZE_STRING);
-    $lastname=filter_var($_POST['lastname'], FILTER_SANITIZE_STRING);
-    $pass=filter_var($_POST['reg-password'], FILTER_SANITIZE_STRING);
-    if(!preg_match("/([A-Z-]{1,8})([a-z-]{1,8})([0-9-]{1,8})/",$pass))
-    {
-        $Message=$Message."Please Enter Valid Password<br>";
-        $Flag=false;
+    $firstname = filter_var($_POST['firstname'], FILTER_SANITIZE_STRING);
+    $lastname = filter_var($_POST['lastname'], FILTER_SANITIZE_STRING);
+    $pass = filter_var($_POST['reg-password'], FILTER_SANITIZE_STRING);
+    if (!preg_match("/([A-Z-]{1,8})([a-z-]{1,8})([0-9-]{1,8})/", $pass)) {
+        $Message = $Message . "Please Enter Valid Password<br>";
+        $Flag = false;
     }
-    $gender=filter_var($_POST['sex'], FILTER_SANITIZE_STRING);
-    $birthdate=preg_replace("([^0-9-])", "", $_POST['birthdate']);
-    $mobile=$_POST['phone'];
-    if(!preg_match('/[0-9]{10}/',$mobile))
-    {
-        $Message=$Message."Please Enter Valid Mobile Number<br>";
-        $Flag=false;
+    $gender = filter_var($_POST['sex'], FILTER_SANITIZE_STRING);
+    $birthdate = preg_replace("([^0-9-])", "", $_POST['birthdate']);
+    $mobile = $_POST['phone'];
+    if (!preg_match('/[0-9]{10}/', $mobile)) {
+        $Message = $Message . "Please Enter Valid Mobile Number<br>";
+        $Flag = false;
     }
     $mysqli = new mysqli("localhost", "root", "", "commcon");
 
 
 //check if connection is a success
-    if(mysqli_connect_errno())
-    {
-        die("Connection to database error:" . mysqli_connect_error() . "(" . mysqli_connect_errno(). ")" );
+    if (mysqli_connect_errno()) {
+        die("Connection to database error:" . mysqli_connect_error() . "(" . mysqli_connect_errno() . ")");
     }
 
-    $call2=$mysqli->prepare('SELECT username FROM userdata WHERE username=?');
+    $call2 = $mysqli->prepare('SELECT username FROM userdata WHERE username=?');
     $call2->bind_param('s', $username);
     $call2->execute();
     $call2->store_result();
-    if($call2->num_rows>0)
-    {
-        $Message=$Message."Selected username already exists";
-        $Flag=false;
+    if ($call2->num_rows > 0) {
+        $Message = $Message . "Selected username already exists";
+        $Flag = false;
     }
     $call2->close();
     //echo $Message;
-    if($Flag)
-    {
-        $call3=$mysqli->prepare('SELECT blockname FROM block WHERE blockname=?');
+    if ($Flag) {
+        $call3 = $mysqli->prepare('SELECT blockname FROM block WHERE blockname=?');
         $call3->bind_param('s', $block);
         $call3->execute();
         $call3->store_result();
 
-        if($call3->num_rows<1)
-        {
-            $call8=$mysqli->prepare('INSERT INTO block (blockname) VALUES (?)');
+        if ($call3->num_rows < 1) {
+            $call8 = $mysqli->prepare('INSERT INTO block (blockname) VALUES (?)');
             $call8->bind_param('s', $block);
             $call8->execute();
             $call8->close();
         }
 
-        $call5=$mysqli->prepare('SELECT neighborhood FROM neighborhood WHERE neighborhood=?');
+        $call5 = $mysqli->prepare('SELECT neighborhood FROM neighborhood WHERE neighborhood=?');
         $call5->bind_param('s', $hood);
         $call5->execute();
         $call5->store_result();
 
-        if($call5->num_rows<1)
-        {
+        if ($call5->num_rows < 1) {
 
-            $call7=$mysqli->prepare('INSERT INTO neighborhood (neighborhood) VALUES (?)');
+            $call7 = $mysqli->prepare('INSERT INTO neighborhood (neighborhood) VALUES (?)');
             $call7->bind_param('s', $hood);
             $call7->execute();
             $call7->close();
         }
 
-        $call9=$mysqli->prepare('SELECT blockid FROM bnmap WHERE blockid=(SELECT blockid FROM block WHERE blockname=?)');
+        $call9 = $mysqli->prepare('SELECT blockid FROM bnmap WHERE blockid=(SELECT blockid FROM block WHERE blockname=?)');
         $call9->bind_param('s', $block);
         $call9->execute();
         $call9->store_result();
 
-        $call10=$mysqli->prepare('SELECT blockid FROM block WHERE blockname=?');
+        $call10 = $mysqli->prepare('SELECT blockid FROM block WHERE blockname=?');
         $call10->bind_param('s', $block);
         $call10->execute();
         $call10->store_result();
         $call10->bind_result($blockid);
-        $value10 =  $call10->fetch();
+        $value10 = $call10->fetch();
         $call10->close();
 
-        if($call9->num_rows<1)
-        {
-            $call11=$mysqli->prepare('SELECT nhid FROM neighborhood WHERE neighborhood=?');
+        if ($call9->num_rows < 1) {
+            $call11 = $mysqli->prepare('SELECT nhid FROM neighborhood WHERE neighborhood=?');
             $call11->bind_param('s', $hood);
             $call11->execute();
             $call11->store_result();
             $call11->bind_result($nhid);
-            $value11 =  $call11->fetch();
+            $value11 = $call11->fetch();
             $call11->close();
 
-            $call12=$mysqli->prepare('INSERT INTO bnmap VALUES (?,?)');
+            $call12 = $mysqli->prepare('INSERT INTO bnmap VALUES (?,?)');
             $call12->bind_param('ii', $blockid, $nhid);
             $call12->execute();
             $call12->close();
         }
 
-        $call14=$mysqli->query('INSERT INTO brequest (fromuser, blockid, approvaltype) VALUES ("'.$username.'",'.$blockid.',"P")');
-        $approval='P';
-        $Message=$Message.$username.$blockid.$approval;
+        $call14 = $mysqli->query('INSERT INTO brequest (fromuser, blockid, approvaltype) VALUES ("' . $username . '",' . $blockid . ',"P")');
+        $approval = 'P';
+        $Message = $Message . $username . $blockid . $approval;
         //$call14->bind_param('sis', $username, $blockid, $approval);
         //$call14->execute();
         //$call14->close();
 
 
-        $call=$mysqli->prepare('call usersignup(?,?,?,?,?,?,?,?,?)');
+        $call = $mysqli->prepare('call usersignup(?,?,?,?,?,?,?,?,?)');
         $call->bind_param('ssssssssi', $username, $firstname, $lastname, $pass, $gender, $db_address, $birthdate, $email, $mobile);
 
         if (!$call->execute()) {
             echo "CALL failed: (" . $mysqli->errno . ") " . $mysqli->error;
-        }else {
+        } else {
             unset($_SESSION['address']);
-            $Message=$Message."Registeration Successful";
-            $_SESSION['username']=$username;
+            $Message = $Message . "Registeration Successful";
+            $_SESSION['username'] = $username;
             //header("location:preapproval.php");
         }
         $call->close();
     }
     $mysqli->close();
-}
-else {
+} else {
     /*if (empty($_POST['add-1']) || empty($_POST['city']) || empty($_POST['state']) || empty($_POST['zip-code'])) {
         echo "Please enter all fields of address<br/>";
         $Flag = false;
@@ -165,13 +154,16 @@ else {
 <nav class="navbar navbar-default navbar-static-top nav-bg">
     <div class="container" id="nav-height">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="" href="#"><img class="logo-img" src="images/hoodicon.png" style="max-width: 50px; display: block; margin: 10px 0;" alt="Logo"><h4 class="logo-text">HoodBuddies</h4></a>
+            <a class="" href="#"><img class="logo-img" src="images/hoodicon.png"
+                                      style="max-width: 50px; display: block; margin: 10px 0;" alt="Logo"><h4
+                    class="logo-text">HoodBuddies</h4></a>
         </div>
         <h1 class="reg-heading">Sign Up</h1>
     </div>
@@ -182,78 +174,84 @@ else {
             <div class="col-lg-6">
                 <div class="reg-page-signup">
                     <h4 id="block"></h4>
-                <form role="form" action="registration.php" method="post">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Username" autofocus required title="Username is required">
-                    </div>
-                    <div class="form-group">
-                        <input type="email" class="form-control" id="reg-email" name="reg-email" placeholder="Email Address" autofocus required title="Email Address is required">
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                        <div class="col-lg-6">
-                            <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Firstname" autofocus required title="Firstname is required">
+                    <form role="form" action="registration.php" method="post">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Username"
+                                   autofocus required title="Username is required">
                         </div>
-                        <div class="col-lg-6">
-                        <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Lastname" autofocus required title="Lastname is required">
-                            </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="reg-email" name="reg-email"
+                                   placeholder="Email Address" autofocus required title="Email Address is required">
                         </div>
-                    </div>
-                    <div class="form-group">
-                    </div>
-                    <div class="form-group">
-                        <input type="password" class="form-control" id="reg-password" name="reg-password" placeholder="Password" autofocus required title="Password is required">
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="radio-btn">
-                                <input type="radio" name="sex" value="male" checked>Male
-                                <input type="radio" name="sex" value="female">Female
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <input type="text" class="form-control" id="firstname" name="firstname"
+                                           placeholder="Firstname" autofocus required title="Firstname is required">
+                                </div>
+                                <div class="col-lg-6">
+                                    <input type="text" class="form-control" id="lastname" name="lastname"
+                                           placeholder="Lastname" autofocus required title="Lastname is required">
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <input type="text" class="form-control" id="birthdate" name="birthdate" placeholder="Birth Date" autofocus required title="Birthdate is required">
+                        </div>
+                        <div class="form-group">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="reg-password" name="reg-password"
+                                   placeholder="Password" autofocus required title="Password is required">
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="radio-btn">
+                                        <input type="radio" name="sex" value="male" checked>Male
+                                        <input type="radio" name="sex" value="female">Female
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <input type="text" class="form-control" id="birthdate" name="birthdate"
+                                           placeholder="Birth Date" autofocus required title="Birthdate is required">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone Number">
-                    </div>
-                    <div class="form-group">
-                        <input type="hidden" class="form-control" id="block1" name="block" >
-                    </div>
-                    <div class="form-group">
-                        <input type="hidden" class="form-control" id="neighbor" name="neighbor" >
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" name="submit" class="btn bg-btn">Apply!</button>
-                    </div>
-                </form>
-            </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone Number">
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" class="form-control" id="block1" name="block">
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" class="form-control" id="neighbor" name="neighbor">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" name="submit" class="btn bg-btn">Apply!</button>
+                        </div>
+                    </form>
                 </div>
+            </div>
             <div class="col-lg-6">
                 <div class="reg-page-signup">
-                <iframe
-                    width="460"
-                    height="395"
-                    frameborder="0" style="border:0"
-                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAe_SOKgsIY6U-TZwhI2xU5yg5Rg7t0ldc
+                    <iframe
+                        width="460"
+                        height="395"
+                        frameborder="0" style="border:0"
+                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAe_SOKgsIY6U-TZwhI2xU5yg5Rg7t0ldc
     &q=<?php echo $address ?>">
-                </iframe>
+                    </iframe>
+                </div>
             </div>
-            </div>
-        </div>
         </div>
     </div>
 </div>
+</div>
 </body>
 <script>
-    var winHeight=$(window).height();
-    var navHeight=$(".navbar").height();
-    $(".registration-page").height(winHeight-navHeight);
-    $(function(){
-        $("#birthdate").datepicker({ dateFormat: 'yy-mm-dd' });
+    var winHeight = $(window).height();
+    var navHeight = $(".navbar").height();
+    $(".registration-page").height(winHeight - navHeight);
+    $(function () {
+        $("#birthdate").datepicker({dateFormat: 'yy-mm-dd'});
     });
 </script>
 <script>
@@ -263,7 +261,7 @@ else {
     $.getJSON(geocodingAPI, function (json) {
 
         // Set the variables from the results array
-        var block = json.results[0].address_components[0].long_name+' and '+json.results[0].address_components[1].long_name;
+        var block = json.results[0].address_components[0].long_name + ' and ' + json.results[0].address_components[1].long_name;
         var neighborhood = json.results[0].address_components[2].long_name;
         document.getElementById("block1").value = block;
         document.getElementById("neighbor").value = neighborhood;
@@ -272,10 +270,10 @@ else {
 
         // Set the table td text
         <?php
-        if(!isset($_POST['submit']))
+        if (!isset($_POST['submit']))
             echo "$('#block').text('Your block is '+ block+'. Fill out the form below to register and apply.');";
         else
-            echo "$('#block').html('".$Message."');";
+            echo "$('#block').html('" . $Message . "');";
         ?>
     });
 

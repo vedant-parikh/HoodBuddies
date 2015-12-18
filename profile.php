@@ -1,39 +1,36 @@
 <?php
 session_start();
-if(!isset($_SESSION['username']))
+if (!isset($_SESSION['username']))
     header("location:login.php");
 $username = $_SESSION['username'];
 $mysqli = new mysqli("localhost", "root", "", "commcon");
 
 
 //check if connection is a success
-if(mysqli_connect_errno())
-{
-    die("Connection to database error:" . mysqli_connect_error() . "(" . mysqli_connect_errno(). ")" );
+if (mysqli_connect_errno()) {
+    die("Connection to database error:" . mysqli_connect_error() . "(" . mysqli_connect_errno() . ")");
 }
 
-$query1=$mysqli->prepare('SELECT firstname,lastname,gender,address,birthdate,email,phone FROM userdata WHERE username=?');
+$query1 = $mysqli->prepare('SELECT firstname,lastname,gender,address,birthdate,email,phone FROM userdata WHERE username=?');
 $query1->bind_param('s', $username);
 $query1->execute();
 $query1->store_result();
-$query1->bind_result($firstname,$lastname,$gender,$address,$birthdate,$email,$phone);
-$value =  $query1->fetch();
+$query1->bind_result($firstname, $lastname, $gender, $address, $birthdate, $email, $phone);
+$value = $query1->fetch();
 $query1->close();
 
-$query2=$mysqli->prepare('SELECT familyinfo,education FROM profile WHERE username=?');
+$query2 = $mysqli->prepare('SELECT familyinfo,education FROM profile WHERE username=?');
 $query2->bind_param('s', $username);
 $query2->execute();
 $query2->store_result();
-$query2->bind_result($familyinfo,$education);
-$value2 =  $query2->fetch();
+$query2->bind_result($familyinfo, $education);
+$value2 = $query2->fetch();
 $query2->close();
 
-if(isset($_POST['submit']))
-{
+if (isset($_POST['submit'])) {
     session_unset();
     session_destroy();
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -55,14 +52,17 @@ if(isset($_POST['submit']))
         <div class="row">
             <div class="col-lg-4">
                 <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="" href="index.php"><img class="logo-img" src="images/hoodicon.png" style="max-width: 50px; display: block; margin: 10px 0;" alt="Logo"><h4 class="logo-text">HoodBuddies</h4></a>
-        </div>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="" href="index.php"><img class="logo-img" src="images/hoodicon.png"
+                                                      style="max-width: 50px; display: block; margin: 10px 0;"
+                                                      alt="Logo"><h4 class="logo-text">HoodBuddies</h4></a>
+                </div>
             </div>
             <div class="col-lg-4">
                 <input class="form-control nav-search" name="search" placeholder="search here...">
@@ -73,7 +73,7 @@ if(isset($_POST['submit']))
                     <button type="submit" class="btn bg-btn" style="float: right" name="logout">Log Out</button>
                 </form>
             </div>
-    </div>
+        </div>
 </nav>
 <div class="profile-page">
     <div class="container">
@@ -87,17 +87,17 @@ if(isset($_POST['submit']))
                     <li><a href='messages.php'>Messages</a></li>
                 </ul>
             </div>
-            <hr class="menu-hr" />
+            <hr class="menu-hr"/>
             <div class="profile-page">
                 <div class="row">
                     <div class="col-lg-4">
-                       <!-- <img id="profileimage" src="#" alt="your image" />
-                        <input type='file' onchange="readURL(this);" /> -->
+                        <!-- <img id="profileimage" src="#" alt="your image" />
+                         <input type='file' onchange="readURL(this);" /> -->
 
                     </div>
                     <div class="col-lg-8">
                         <div class="col-lg-2">
-                        <h5 class="profile-param">Firstname</h5>
+                            <h5 class="profile-param">Firstname</h5>
                         </div>
                         <div class="col-lg-1"><h5>:</h5></div>
                         <div class="col-lg-9">
@@ -123,7 +123,8 @@ if(isset($_POST['submit']))
                         <div class="col-lg-1"><h5>:</h5></div>
                         <div class="col-lg-9">
                             <h5 class="profile-param"><?php echo $username ?></h5>
-                        </div><div class="col-lg-2">
+                        </div>
+                        <div class="col-lg-2">
                             <h5 class="profile-param">Address</h5>
                         </div>
                         <div class="col-lg-1"><h5>:</h5></div>
@@ -172,5 +173,4 @@ if(isset($_POST['submit']))
     </div>
 </div>
 </body>
-
 </html>

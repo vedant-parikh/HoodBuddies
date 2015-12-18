@@ -3,21 +3,19 @@ session_start();
 $username = $_SESSION['username'];
 $mysqli = new mysqli("localhost", "root", "", "commcon");
 //check if connection is a success
-if(mysqli_connect_errno())
-{
-    die("Connection to database error:" . mysqli_connect_error() . "(" . mysqli_connect_errno(). ")" );
+if (mysqli_connect_errno()) {
+    die("Connection to database error:" . mysqli_connect_error() . "(" . mysqli_connect_errno() . ")");
 }
 
-$query1=$mysqli->prepare('SELECT firstname,lastname,gender,address,birthdate,email,phone FROM userdata WHERE username=?');
+$query1 = $mysqli->prepare('SELECT firstname,lastname,gender,address,birthdate,email,phone FROM userdata WHERE username=?');
 $query1->bind_param('s', $username);
 $query1->execute();
 $query1->store_result();
-$query1->bind_result($firstname,$lastname,$gender,$address,$birthdate,$email,$phone);
-$value =  $query1->fetch();
+$query1->bind_result($firstname, $lastname, $gender, $address, $birthdate, $email, $phone);
+$value = $query1->fetch();
 $query1->close();
 
-if(isset($_POST['submit']))
-{
+if (isset($_POST['submit'])) {
     session_unset();
     session_destroy();
 }
@@ -42,14 +40,17 @@ if(isset($_POST['submit']))
         <div class="row">
             <div class="col-lg-4">
                 <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="" href="index.php"><img class="logo-img" src="images/hoodicon.png" style="max-width: 50px; display: block; margin: 10px 0;" alt="Logo"><h4 class="logo-text">HoodBuddies</h4></a>
-        </div>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                            aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="" href="index.php"><img class="logo-img" src="images/hoodicon.png"
+                                                      style="max-width: 50px; display: block; margin: 10px 0;"
+                                                      alt="Logo"><h4 class="logo-text">HoodBuddies</h4></a>
+                </div>
             </div>
             <div class="col-lg-4">
                 <input class="form-control nav-search" name="search" placeholder="search here...">
@@ -60,7 +61,7 @@ if(isset($_POST['submit']))
                     <button type="submit" class="btn bg-btn" style="float: right">Log Out</button>
                 </form>
             </div>
-    </div>
+        </div>
 </nav>
 <div class="profile-page">
     <div class="container">
@@ -74,7 +75,7 @@ if(isset($_POST['submit']))
                     <li><a href='messages.php'>Messages</a></li>
                 </ul>
             </div>
-            <hr class="menu-hr" />
+            <hr class="menu-hr"/>
         </div>
     </div>
 </div>

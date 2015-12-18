@@ -1,7 +1,6 @@
 <?php
 session_start();
-if(isset($_POST['logout']))
-{
+if (isset($_POST['logout'])) {
     session_unset();
     session_destroy();
 }
@@ -24,13 +23,16 @@ if(isset($_POST['logout']))
 <nav class="navbar navbar-default navbar-static-top nav-bg">
     <div class="container" id="nav-height">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="" href="index.php"><img class="logo-img" src="images/hoodicon.png" style="max-width: 50px; display: block; margin: 10px 0;" alt="Logo"><h4 class="logo-text">HoodBuddies</h4></a>
+            <a class="" href="index.php"><img class="logo-img" src="images/hoodicon.png"
+                                              style="max-width: 50px; display: block; margin: 10px 0;" alt="Logo"><h4
+                    class="logo-text">HoodBuddies</h4></a>
         </div>
     </div>
 </nav>
@@ -38,29 +40,30 @@ if(isset($_POST['logout']))
     <div class="container">
         <div class="login-page-signup">
             <div class="row">
-            <div class="col-lg-12">
-                <h1 class="login-heading">Login</h1>
-                <form action="home.php" method="post" >
-                    <div class="form-group">
-                          <input type="text" class="form-control" id="usr2" placeholder="Username" name="username">
-                    </div>
-                    <div class="form-group">
-                          <input type="password" class="form-control" id="usr2" placeholder="Password" name="password">
-                    </div>
+                <div class="col-lg-12">
+                    <h1 class="login-heading">Login</h1>
+                    <form action="home.php" method="post">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="usr2" placeholder="Username" name="username">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="usr2" placeholder="Password"
+                                   name="password">
+                        </div>
                         <button type="submit" name="login" class="btn bg-btn">Login</button>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
         </div>
     </div>
 </div>
 </body>
 <script>
-    var winHeight=$(window).height();
-    var navHeight=$(".navbar").height();
-    $(".main-page").height(winHeight-navHeight);
-    var mainPageSignupHeight=(winHeight/2)-($('.login-page-signup').height())
-    $(".login-page-signup").css("margin-top",mainPageSignupHeight+"px");
+    var winHeight = $(window).height();
+    var navHeight = $(".navbar").height();
+    $(".main-page").height(winHeight - navHeight);
+    var mainPageSignupHeight = (winHeight / 2) - ($('.login-page-signup').height())
+    $(".login-page-signup").css("margin-top", mainPageSignupHeight + "px");
 </script>
 </html>
 
