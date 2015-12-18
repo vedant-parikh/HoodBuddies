@@ -35,20 +35,19 @@ $query1->close();
     <link rel="icon" sizes="180x180" href="images/apple-icon-180x180.png">
 </head>
 <body>
-<div id="bc">
 <nav class="navbar navbar-default navbar-static-top nav-bg">
     <div class="container" id="nav-height">
         <div class="row">
             <div class="col-lg-4">
                 <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="" href="index.php"><img class="logo-img" src="images/hoodicon.png" style="max-width: 50px; display: block; margin: 10px 0;" alt="Logo"><h4 class="logo-text">HoodBuddies</h4></a>
-        </div>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="" href="index.php"><img class="logo-img" src="images/hoodicon.png" style="max-width: 50px; display: block; margin: 10px 0;" alt="Logo"><h4 class="logo-text">HoodBuddies</h4></a>
+                </div>
             </div>
             <div class="col-lg-4">
                 <input class="form-control nav-search" name="search" placeholder="search here...">
@@ -59,7 +58,7 @@ $query1->close();
                     <button type="submit" class="btn bg-btn" name="logout" style="float: right">Log Out</button>
                 </form>
             </div>
-    </div>
+        </div>
 </nav>
 <div class="profile-page">
     <div class="container">
@@ -75,94 +74,23 @@ $query1->close();
             </div>
             <hr class="menu-hr" />
         </div>
-        <?php
-        $query2=$mysqli->prepare('SELECT * FROM conversation WHERE msgto=? ORDER BY msgtime DESC');
-        $query2->bind_param('s', $username);
-        $query2->execute();
-        $query2->store_result();
-        $query2->bind_result($msgfrom,$msgto,$msgtime,$msgtype,$title,$message,$flag);
-        while($query2->fetch())
-        {
-            if($msgtype==1)
-                continue;
-            ?>
         <div class="message-page">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="msg-name">
-                        <h4><a href="#"><?php echo $msgfrom ?></a></h4>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="msg-text">
-                        <h4 class="title"><?php echo $title ?></h4>
-                        <hr class="menu-hr">
-                        <h5 class="text"><?php echo $message; ?></h5>
-                        <div class="margin-bottom"></div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="msg-time">
-                        <h5><?php echo $msgtime ?></h5>
-                    </div>
-                </div>
-            </div>
         </div>
-            <?php
-        }
-        $query2->close();
-        ?>
-            <!--  <div class="message-page">
-                  <div class="row">
-                      <div class="col-lg-3">
-                          <div class="msg-name">
-                              <h4><a href="#"> Zeal</a></h4>
-                          </div>
-                      </div>
-                      <div class="col-lg-6">
-                          <div class="msg-text">
-                              <h4 class="title">hello</h4>
-                              <hr class="menu-hr">
-                              <h5 class="text">hellow</h5>
-                              <div class="margin-bottom"></div>
-                          </div>
-                      </div>
-                      <div class="col-lg-3">
-                          <div class="msg-time">
-                              <h4></h4>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-lg-3">
-                          <div class="msg-name">
-                              <h4>Zeal</h4>
-                          </div>
-                      </div>
-                      <div class="col-lg-6">
-                          <div class="msg-text">
-                              <h4 class="title">hello</h4>
-                              <hr class="menu-hr">
-                              <h5 class="text">hellow</h5>
-                          </div>
-                      </div>
-                      <div class="col-lg-3">
-                          <div class="msg-time">
-                              <h4></h4>
-                          </div>
-                      </div>
-                  </div>
-              </div> -->
-
-
-</div>
-</div>
+    </div>
 </body>
+</html>
 <script>
-    $(document).ready(function() {
-        $.get('home.php', function (data) {
-            $('#bc').html(data);
+    var timestamp = 0;
+    //setTimeout("location.reload(true);",5000);
+    setInterval(function(){
+        $.ajax({
+            url:"realtime.php",
+            type:"GET",
+            dataType:"html",
+            success:function(data){
+                    $('.message-page').html(data);
+            }
         });
-    });
+    }, 1000);
 </script>
 </html>
