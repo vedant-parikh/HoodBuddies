@@ -8,7 +8,22 @@ $mysqli = new mysqli("localhost", "root", "", "commcon");
 if (mysqli_connect_errno()) {
     die("Connection to database error:" . mysqli_connect_error() . "(" . mysqli_connect_errno() . ")");
 }
-
+if(isset($_POST['accept'])){
+    $reqid = $_POST['requestid'];
+    $appusername = $_POST['appusername'];
+    $query4 = $mysqli->prepare('INSERT INTO bresponse VALUES (?,?,"A")');
+    $query4->bind_param('is', $reqid,$appusername);
+    $query4->execute();
+    $query4->close();
+}
+elseif(isset($_POST['reject'])){
+    $reqid = $_POST['requestid'];
+    $appusername = $_POST['appusername'];
+    $query4 = $mysqli->prepare('INSERT INTO bresponse VALUES (?,?,"R")');
+    $query4->bind_param('is', $reqid,$appusername);
+    $query4->execute();
+    $query4->close();
+}
 $query1 = $mysqli->prepare('SELECT firstname,lastname,gender,address,birthdate,email,phone FROM userdata WHERE username=?');
 $query1->bind_param('s', $username);
 $query1->execute();
@@ -65,7 +80,7 @@ $query1->close();
         <div class="row">
             <div id='cssmenu'>
                 <ul>
-                    <li class='active'><a href='#'>Home</a></li>
+                    <li class='active'><a href='home.php'>Home</a></li>
                     <li><a href='profile.php'>Profile</a></li>
                     <li><a href='connections.php'>Connections</a></li>
                     <li><a href='maps.php'>Map</a></li>
@@ -75,13 +90,13 @@ $query1->close();
             <hr class="menu-hr"/>
         </div>
         <div class="col-lg-3">
-            <ul>
+            <ul class="side-menu">
                 <li><a href="pendingrequest.php">Pending Requests</a></li>
                 <li><a href="messages.php">Unread Messages</a></li>
             </ul>
         </div>
         <div class="col-lg-9">
-        <div class="message-page">
+        <div class="pending-page">
         </div>
             </div>
     </div>
@@ -92,11 +107,11 @@ $query1->close();
     //setTimeout("location.reload(true);",5000);
     setInterval(function () {
         $.ajax({
-            url: "realtime.php",
+            url: "brrequest.php",
             type: "GET",
             dataType: "html",
             success: function (data) {
-                $('.message-page').html(data);
+                $('.pending-page').html(data);
             }
         });
     }, 1000);

@@ -10,6 +10,25 @@ $mysqli = new mysqli("localhost", "root", "", "commcon");
 if (mysqli_connect_errno()) {
     die("Connection to database error:" . mysqli_connect_error() . "(" . mysqli_connect_errno() . ")");
 }
+if(isset($_POST['profileupdate'])){
+    $fname = $_POST['firstname'];
+    $lname = $_POST['lastname'];
+    $gen = $_POST['sex'];
+    $add = $_POST['address'];
+    $bdate = $_POST['birthdate'];
+    $emadd = $_POST['email'];
+    $ph = $_POST['phone'];
+    $finfo = $_POST['familyinfo'];
+    $edu = $_POST['education'];
+    $query3 = $mysqli->prepare('UPDATE userdata SET firstname=?,lastname=?,gender=?,address=?,birthdate=?,email=?,phone=? WHERE username =?');
+    $query3->bind_param('ssssssss', $fname, $lname, $gen, $add, $bdate, $emadd, $ph, $username);
+    $query3->execute();
+    $query3->close();
+    $query4 = $mysqli->prepare('UPDATE profile SET familyinfo=?,education=? WHERE username =?');
+    $query4->bind_param('sss', $finfo, $edu, $username);
+    $query4->execute();
+    $query4->close();
+}
 
 $query1 = $mysqli->prepare('SELECT firstname,lastname,gender,address,birthdate,email,phone FROM userdata WHERE username=?');
 $query1->bind_param('s', $username);
@@ -91,9 +110,9 @@ if (isset($_POST['submit'])) {
             <div class="profile-page">
                 <div class="row">
                     <div class="col-lg-4">
-                        <!-- <img id="profileimage" src="#" alt="your image" />
-                         <input type='file' onchange="readURL(this);" /> -->
-
+                        <form action="profileedit.php" method="post">
+                            <button type="submit" style="text-align: center !important;" class="btn bg-btn" name="editprofile">Edit Profile</button>
+                        </form>
                     </div>
                     <div class="col-lg-8">
                         <div class="col-lg-2">

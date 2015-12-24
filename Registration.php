@@ -111,7 +111,7 @@ if (isset($_POST['submit'])) {
 
 
         $call = $mysqli->prepare('call usersignup(?,?,?,?,?,?,?,?,?)');
-        $call->bind_param('ssssssssi', $username, $firstname, $lastname, $pass, $gender, $db_address, $birthdate, $email, $mobile);
+        $call->bind_param('sssssssss', $username, $firstname, $lastname, $pass, $gender, $db_address, $birthdate, $email, $mobile);
 
         if (!$call->execute()) {
             echo "CALL failed: (" . $mysqli->errno . ") " . $mysqli->error;

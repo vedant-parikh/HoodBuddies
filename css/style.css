@@ -352,6 +352,8 @@ h4#block {
 }
 
 .side-menu a{ text-decoration: none; color: #1abc9c; font-weight: bold;}
+.side-menu a:hover{color: #34495e;}
+ul.side-menu{list-style: none;}
 
 /* Home Page End */
 
@@ -377,3 +379,8 @@ h4#block {
 
 /* Pre Approval Page */
 .preapproval-page h4{text-align: center; color: #1abc9c; margin-top: 40px;}
+
+/* Pre Approval Page End */
+
+/* Profile Edit Page */
+.profile-page input{width: 300px;}
