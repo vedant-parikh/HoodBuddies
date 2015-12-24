@@ -1,8 +1,45 @@
 <?php
-session_start();
 if (isset($_POST['logout'])) {
+    session_start();
     session_unset();
     session_destroy();
+}
+else if (isset($_POST['login'])) {
+    session_start();
+$Flag = true;
+$Message = "";
+$username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
+$pass = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
+if (!preg_match("/([A-Z-]{1,8})([a-z-]{1,8})([0-9-]{1,8})/", $pass)) {
+$Message = $Message . "Please Enter Valid Password<br>";
+$Flag = false;
+}
+$mysqli = new mysqli("localhost", "root", "", "commcon");
+if (mysqli_connect_errno()) {
+die("Connection to database error:" . mysqli_connect_error() . "(" . mysqli_connect_errno() . ")");
+}
+$call2 = $mysqli->prepare('SELECT username, password FROM userdata WHERE username=?');
+$call2->bind_param('s', $username);
+$call2->execute();
+$call2->store_result();
+if ($call2->num_rows > 0) {
+$call2->bind_result($username, $password);
+while ($call2->fetch()) {
+if ($password == $pass) {
+$_SESSION['username'] = $username;
+header("location:home.php");
+break;
+} else {
+$Message = $Message . "Password does not match. Please try again";
+break;
+}
+}
+} else {
+$Message = $Message . "No user record found. Please Sign-Up";
+}
+
+
+$call2->close();
 }
 ?>
 <!DOCTYPE html>
