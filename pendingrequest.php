@@ -75,7 +75,7 @@ $query1->close();
             <hr class="menu-hr"/>
         </div>
         <div class="col-lg-3">
-            <ul class="side-menu">
+            <ul>
                 <li><a href="pendingrequest.php">Pending Requests</a></li>
                 <li><a href="messages.php">Unread Messages</a></li>
             </ul>

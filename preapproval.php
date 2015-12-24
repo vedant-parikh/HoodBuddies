@@ -9,11 +9,11 @@ if (mysqli_connect_errno()) {
     die("Connection to database error:" . mysqli_connect_error() . "(" . mysqli_connect_errno() . ")");
 }
 
-$query1 = $mysqli->prepare('SELECT firstname,lastname,gender,address,birthdate,email,phone FROM userdata WHERE username=?');
+$query1 = $mysqli->prepare('SELECT firstname FROM userdata WHERE username=?');
 $query1->bind_param('s', $username);
 $query1->execute();
 $query1->store_result();
-$query1->bind_result($firstname, $lastname, $gender, $address, $birthdate, $email, $phone);
+$query1->bind_result($firstname);
 $value = $query1->fetch();
 $query1->close();
 ?>
@@ -50,7 +50,6 @@ $query1->close();
                 </div>
             </div>
             <div class="col-lg-4">
-                <input class="form-control nav-search" name="search" placeholder="search here...">
             </div>
             <div class="col-lg-4">
                 <h4 class="reg-heading">Welcome <?php echo $firstname ?>!</h4>
@@ -60,45 +59,15 @@ $query1->close();
             </div>
         </div>
 </nav>
-<div class="profile-page">
+<div class="preapproval-page">
     <div class="container">
-        <div class="row">
-            <div id='cssmenu'>
-                <ul>
-                    <li class='active'><a href='#'>Home</a></li>
-                    <li><a href='profile.php'>Profile</a></li>
-                    <li><a href='connections.php'>Connections</a></li>
-                    <li><a href='maps.php'>Map</a></li>
-                    <li><a href='messages.php'>Messages</a></li>
-                </ul>
+        <div class="preapproval-page">
+            <h4>We are still waiting for approval by block members. Once you are approved, we will add you to the block. <br>Thank you for your patience.</h4>
+            <div class="row">
+                <hr class="menu-hr"/>
             </div>
-            <hr class="menu-hr"/>
         </div>
-        <div class="col-lg-3">
-            <ul class="side-menu">
-                <li><a href="pendingrequest.php">Pending Requests</a></li>
-                <li><a href="messages.php">Unread Messages</a></li>
-            </ul>
-        </div>
-        <div class="col-lg-9">
-        <div class="message-page">
-        </div>
-            </div>
     </div>
 </body>
 </html>
-<script>
-    var timestamp = 0;
-    //setTimeout("location.reload(true);",5000);
-    setInterval(function () {
-        $.ajax({
-            url: "realtime.php",
-            type: "GET",
-            dataType: "html",
-            success: function (data) {
-                $('.message-page').html(data);
-            }
-        });
-    }, 1000);
-</script>
 </html>

@@ -351,6 +351,8 @@ h4#block {
     margin-bottom: 30px;
 }
 
+.side-menu a{ text-decoration: none; color: #1abc9c; font-weight: bold;}
+
 /* Home Page End */
 
 /* Login Page Start*/
@@ -371,3 +373,7 @@ h4#block {
 }
 
 /* Login Page End*/
+
+
+/* Pre Approval Page */
+.preapproval-page h4{text-align: center; color: #1abc9c; margin-top: 40px;}
