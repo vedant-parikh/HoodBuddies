@@ -25,21 +25,20 @@ $query1->bind_result($firstname, $lastname, $gender, $address, $birthdate, $emai
 $value = $query1->fetch();
 $query1->close();
 
-$query2 = $mysqli->prepare('CALL listfrns(?)');
-$query2->bind_param('s',$username);
+$friend='';
+$query2 = $mysqli->prepare('select fromuser, touser from relation where fromuser=? or touser=? and type="F"');
+$query2->bind_param('ss',$username, $username);
 $query2->execute();
 $query2->store_result();
 $query2->bind_result($fromuser, $touser);
-while($query2->fetch())
-{
-    if($fromuser!=$username)
-    $friend=$fromuser;
-    else
-        $friend=$touser;
 
-    echo $friend;
-}
-$query2->close();
+
+$nbrs='';
+$query3 = $mysqli->prepare('select fromuser, touser from relation where fromuser=? or touser=? and type="N"');
+$query3->bind_param('ss',$username,$username);
+$query3->execute();
+$query3->store_result();
+$query3->bind_result($fromuser1, $touser1);
 
 
 if (isset($_POST['submit'])) {
@@ -103,6 +102,48 @@ if (isset($_POST['submit'])) {
                 </ul>
             </div>
             <hr class="menu-hr"/>
+        </div>
+        <div class="row">
+        <div class="col-lg-12">
+            <div class="connection-page">
+                <h1>Friends</h1>
+                <?php
+                while($query2->fetch())
+                {
+                if($fromuser!=$username)
+                    $friend=$fromuser;
+                elseif($touser!=$username){
+                    $friend=$touser;}
+                else
+                    $friend=NULL;
+                if($friend==NULL)
+                    echo "You Have No Friends :(";
+                elseif($friend!=false)
+                    echo "<div class='row'> <div class='col-lg-3'><div class='msg-name'>".$friend."</div></div><div class='col-lg-9'></div></div>";?>
+                    <?php
+                }
+                $query2->close();
+                ?>
+                <h1>Neighbors</h1>
+                <?php
+                while($query3->fetch())
+                {
+                    if($fromuser1!=$username)
+                        $nbrs=$fromuser1;
+                    elseif($touser1!=$username)
+                        $nbrs=$touser1;
+                    else
+                        $nbrs=NULL;
+                    if($nbrs==NULL)
+                        echo "You Have No Neighbors :(";
+                    elseif($nbrs!=false)
+                        echo "<div class='row'> <div class='col-lg-3'><div class='msg-name'>".$nbrs."</div></div><div class='col-lg-9'></div></div>";
+                        ?>
+                    <?php
+                }
+                $query3->close();?>
+            </div>
+        </div>
         </div>
     </div>
 </div>
