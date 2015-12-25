@@ -82,25 +82,15 @@ if (isset($_POST['finalsubmit'])) {
             $call12->close();
         }
 
-        $call = $mysqli->prepare('INSERT INTO brequest(fromuser,blockid,approvaltype) VALUES(?,?,"P")');
-        $call->bind_param('ss', $username, $blockid);
-        $call->execute();
-        $call->store_result();
-        if($mysqli->query('INSERT INTO brequest(fromuser,blockid,approvaltype) VALUES("'.$username.'","'.$blockid.'","P")')===TRUE)
-        $Message = $Message . $username . $blockid ;
-        //$call14->bind_param('si', $username, $blockid);
-       // $call14->execute();
-        //$call14->close();
-
-        if (!$call->execute()) {
+        if($mysqli->query('INSERT INTO brequest(fromuser,blockid,approvaltype) VALUES("'.$username.'","'.$blockid.'","P")')===FALSE){
             echo "CALL failed: (" . $mysqli->errno . ") " . $mysqli->error;
         } else {
             unset($_SESSION['address']);
-            $Message = $Message . "Registeration Successful";
+           // $Message = $Message . "Registeration Successful";
             $_SESSION['username'] = $username;
-            //header("location:preapproval.php");
+            header("location:preapproval.php");
         }
-        $call->close();
+        //$call->close();
     }
     $mysqli->close();
 } else {
