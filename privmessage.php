@@ -38,9 +38,12 @@ while ($query2->fetch()) {
 ?>
     <div class="row">
         <div class="col-lg-3">
-            <div class="msg-name">
-                <h4><a href="#"><?php echo $msgfrom ?></a></h4>
-            </div>
+            <form action="userprofile.php" method="post">
+                <div class="msg-name">
+                    <input type="hidden" name="otheruser" value="<?php echo $msgfrom ?>">
+                    <input class="h4" type="submit" name="ouserpost" value="<?php echo $msgfrom ?>">
+                </div>
+            </form>
         </div>
         <div class="col-lg-6">
             <div class="msg-text">

@@ -119,7 +119,7 @@ if (isset($_POST['submit'])) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>HoodBuddies</title>
@@ -174,6 +174,53 @@ if (isset($_POST['submit'])) {
                 </ul>
             </div>
             <hr class="menu-hr"/>
+            <div class="profile-page">
+                <form action="profile.php" method="post">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <!-- <img id="profileimage" src="#" alt="your image" />
+                             <input type='file' onchange="readURL(this);" /> -->
+
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <h5 class="profile-param">To:</h5>
+                                </div>
+                                <div class="col-lg-1"><h5>:</h5></div>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" name="firstname" value ="<?php echo $firstname ?>" required title="address is required"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <h5 class="profile-param">Title</h5>
+                                </div>
+                                <div class="col-lg-1"><h5>:</h5></div>
+                                <div class="col-lg-9">
+                                    <input type="text" class="form-control" name="lastname" value ="<?php echo $lastname ?>" required title="address is required"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <h5 class="profile-param">Message</h5>
+                                </div>
+                                <div class="col-lg-1"><h5>:</h5></div>
+                                <div class="col-lg-9">
+                                    <textarea type="text" class="form-control" name="address" value ="<?php echo $address ?>" required title="address is required"/></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <button type="submit" class="btn bg-btn" name="sendMessage">Send!</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
         </div>
     </div>
 </div>

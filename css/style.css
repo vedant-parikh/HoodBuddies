@@ -384,3 +384,8 @@ input.h4{border-color: transparent; background: none; max-width: 100px;}
 
 /* Profile Edit Page */
 .profile-page input{width: 300px;}
+/* Profile Page End */
+
+/* Message Page*/
+a.cmpmsg{text-decoration: none; color: #fff;}
+a.cmpmsg:hover{text-decoration: none; color: #1abc9c;}

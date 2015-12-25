@@ -89,9 +89,7 @@ if (isset($_POST['submit'])) {
             </div>
             <hr class="menu-hr"/>
             <div class="col-lg-3">
-                <ul class="side-menu">
-
-                </ul>
+                <button type="submit" class="btn bg-btn"><a class="cmpmsg" href="composemsg.php">Compose Message</a></button>
             </div>
             <div class="col-lg-9">
                 <div class="message-page">
