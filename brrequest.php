@@ -83,7 +83,10 @@ while ($query2->fetch()) {
         <div class="col-lg-3">
             <div class="msg-name">
                 <input type="hidden" class="hidden" name="requestid" value="<?php echo $requestid ?>"/>
-                <input type="hidden" class="hidden" name="appusername" value="<?php echo $username ?>"/>
+                <input type="text" class="hidden" name="appusername" value="<?php echo $username ?>"/>
+                    <div class="msg-name">
+                        <h4><?php echo $fromuser ?></h4>
+                    </div>
             </div>
         </div>
         <div class="col-lg-6">
@@ -91,10 +94,10 @@ while ($query2->fetch()) {
                 <h5 class="title">Hi! I am your neighbor. I would like to connect with you and other block members. Please accept my request.</h5>
                 <div class="row">
                 <div class="col-lg-offset-6 col-lg-3">
-                    <button class="btn bg-btn" name="acceptp">Accept</button>
+                    <button type="submit" class="btn bg-btn" name="acceptp">Accept</button>
                 </div>
                 <div class="col-lg-3">
-                    <button class="btn bg-btn" name="rejectp">Reject</button>
+                    <button type="submit" class="btn bg-btn" name="rejectp">Reject</button>
                 </div>
                 </div>
         </form>

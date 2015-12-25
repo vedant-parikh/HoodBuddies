@@ -31,30 +31,33 @@ if(isset($_POST['acceptf'])){
     $query5->execute();
     $query5->close();
 }
+
 elseif(isset($_POST['rejectf'])){
-    $fuser1 = $_POST['fromuser1'];
-    $touser1 = $_POST['touser1'];
-    $query5 = $mysqli->prepare('UPDATE relation SET type="R" WHERE touser=? AND fromuser=?');
-    $query5->bind_param('ss', $username,$fuser1);
-    $query5->execute();
-    $query5->close();
+    $fuser2 = $_POST['fromuser1'];
+    $touser2 = $_POST['touser1'];
+    $query6 = $mysqli->prepare('UPDATE relation SET type="R" WHERE touser=? AND fromuser=?');
+    $query6->bind_param('ss', $username,$fuser2);
+    $query6->execute();
+    $query6->close();
 }
 
-if(isset($_POST['acceptb'])){
+if(isset($_POST['acceptp'])){
     $reqid = $_POST['requestid'];
     $appusername = $_POST['appusername'];
-    $query4 = $mysqli->prepare('INSERT INTO bresponse VALUES (?,?,"A")');
-    $query4->bind_param('is', $reqid,$appusername);
-    $query4->execute();
-    $query4->close();
+    echo $reqid.$appusername;
+    $query7 = $mysqli->prepare('INSERT INTO bresponse VALUES (?,?,"A")');
+    $query7->bind_param('is', $reqid, $appusername);
+    $query7->execute();
+    $query7->close();
 }
-elseif(isset($_POST['rejectb'])){
+
+elseif(isset($_POST['rejectp'])){
     $reqid = $_POST['requestid'];
     $appusername = $_POST['appusername'];
-    $query4 = $mysqli->prepare('INSERT INTO bresponse VALUES (?,?,"R")');
-    $query4->bind_param('is', $reqid,$appusername);
-    $query4->execute();
-    $query4->close();
+    $query8 = $mysqli->prepare('INSERT INTO bresponse VALUES (?,?,"R")');
+    $query8->bind_param('is', $reqid,$appusername);
+    $query8->execute();
+    $query8->close();
 }
 
 $query1 = $mysqli->prepare('SELECT firstname,lastname,gender,address,birthdate,email,phone FROM userdata WHERE username=?');

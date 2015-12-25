@@ -107,7 +107,7 @@ if (isset($_POST['submit'])) {
             $call12->execute();
             $call12->close();
         }
-        
+
         $call24 = $mysqli->prepare('INSERT INTO latlong VALUES (?,?,?)');
         $call24->bind_param('sss', $username, $lat, $long);
         $call24->execute();

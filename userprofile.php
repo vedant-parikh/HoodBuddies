@@ -37,6 +37,7 @@ if(isset($_POST['ouserpost'])){
     $otheruser=$_POST['otheruser'];
 }
 if(isset($_POST['frequest'])){
+    $otheruser=$_POST['otheruser'];
     $appusername = $_POST['userprofile'];
     $query4 = $mysqli->prepare('INSERT INTO relation VALUES (?,?,"P")');
     $query4->bind_param('ss',$username,$appusername);
@@ -44,18 +45,19 @@ if(isset($_POST['frequest'])){
     $query4->close();
 }
 elseif(isset($_POST['nrequest'])){
+    $otheruser=$_POST['ouserpost'];
     $appusername = $_POST['userprofile'];
-    $query4 = $mysqli->prepare('INSERT INTO relation VALUES (?,?,"N")');
-    $query4->bind_param('ss', $appusername,$username);
-    $query4->execute();
-    $query4->close();
+    $query5 = $mysqli->prepare('INSERT INTO relation VALUES (?,?,"N")');
+    $query5->bind_param('ss', $appusername,$username);
+    $query5->execute();
+    $query5->close();
 }
 
-$query1 = $mysqli->prepare('SELECT firstname,lastname,username,email,familyinfo,education FROM userdata JOIN profile USING (username) WHERE username=?');
+$query1 = $mysqli->prepare('SELECT firstname,lastname,username,email FROM userdata WHERE username=?');
 $query1->bind_param('s',$otheruser);
 $query1->execute();
 $query1->store_result();
-$query1->bind_result($firstname1, $lastname1, $username1, $email1, $finfo1, $edu1);
+$query1->bind_result($firstname1, $lastname1, $username1, $email1);
 $value = $query1->fetch();
 $query1->close();
 
@@ -113,7 +115,10 @@ if (isset($_POST['submit'])) {
                 </div>
             </div>
             <div class="col-lg-4">
-                <input class="form-control nav-search" name="search" placeholder="search here...">
+                <form action="search.php" method="post">
+                    <input class="form-control nav-search" name="search" placeholder="search here...">
+                    <input type="submit" style="display:none"/>
+                </form>
             </div>
             <div class="col-lg-4">
                 <h4 class="reg-heading">Welcome <?php echo $firstname ?>!</h4>
@@ -139,6 +144,7 @@ if (isset($_POST['submit'])) {
             <div class="profile-page">
                 <form action="userprofile.php" method="post">
                     <input type="hidden" name="userprofile" value="<?php echo $username1 ?>">
+                    <input type="hidden" name="otheruser" value="<?php echo $otheruser ?>">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="col-lg-2">
@@ -170,20 +176,6 @@ if (isset($_POST['submit'])) {
                             <h5 class="profile-param"><?php echo $email1 ?></h5>
                         </div>
                         <div class="col-lg-2">
-                            <h5 class="profile-param">Family Info</h5>
-                        </div>
-                        <div class="col-lg-1"><h5>:</h5></div>
-                        <div class="col-lg-9">
-                            <h5 class="profile-param"><?php echo $finfo1 ?></h5>
-                        </div>
-                        <div class="col-lg-2">
-                            <h5 class="profile-param">Education</h5>
-                        </div>
-                        <div class="col-lg-1"><h5>:</h5></div>
-                        <div class="col-lg-9">
-                            <h5 class="profile-param"><?php echo $edu1 ?></h5>
-                        </div>
-                        <div class="col-lg-2">
                             <h5 class="profile-param">Block</h5>
                         </div>
                         <div class="col-lg-1"><h5>:</h5></div>
@@ -199,13 +191,13 @@ if (isset($_POST['submit'])) {
                         </div>
                         <div class="col-lg-12">
                         <?php
-                        if($type!='F' && $type!='N' && $type!='R'){
+                        if($type!='F' && $type!='N' && $type!='R' && $type!='P') {
                         ?>
                                 <button type="submit" class="btn bg-btn" name="frequest">Add as Friend</button>
                                 <button type="submit" class="btn bg-btn" name="nrequest">Add as Neighbor</button>
                         <?php
                         }
-                        elseif($type=='N' && $type!='F' && $type!='R'){
+                        elseif($type=='N' && $type!='F' && $type!='R' && $type!='P'){
                         ?>
                                 <button type="submit" class="btn bg-btn" name="frequest">Add as Friend</button>
                         <?php
@@ -215,7 +207,11 @@ if (isset($_POST['submit'])) {
                                 <h4>You are friend of <?php echo $firstname ?></h4>
                         <?php
                         }
-
+                        elseif($type=='P'){
+                            ?>
+                            <h4>Friend Request Sent!</h4>
+                            <?php
+                        }
                         ?>
                 </form>
                     </div>

@@ -198,6 +198,15 @@ if (isset($_POST['submit'])) {
                             <input type="text" class="form-control" name="education" value ="<?php echo $education ?>" required title="address is required"/>
                         </div>
                             </div>
+                        <div class="col-lg-2">
+                            <h5 class="profile-param">Profile Picture</h5>
+                        </div>
+                        <div class="col-lg-1"><h5>:</h5></div>
+                        <div class="col-lg-9">
+                            <input type="file" style="width:200px">
+                        </div>
+                    </div>
+
                         <div class="row">
                             <div class="col-lg-12">
                                 <button type="submit" class="btn bg-btn" name="profileupdate">Update!</button>

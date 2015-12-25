@@ -124,6 +124,15 @@ if (isset($_POST['submit'])) {
             <div class="profile-page">
                 <div class="row">
                     <div class="col-lg-4">
+                        <div class="row">
+                        <div class="col-lg-2">
+                            <h5 class="profile-param">Profile Picture</h5>
+                        </div>
+                        <div class="col-lg-1"><h5>:</h5></div>
+                        <div class="col-lg-9">
+                            <h5 class="profile-param"><img style="width: 100px; height: 100px;" src='images/default.png'></h5>
+                        </div>
+                        </div>
                         <form action="profileedit.php" method="post">
                             <button type="submit" style="text-align: center !important;" class="btn bg-btn" name="editprofile">Edit Profile</button>
                         </form>

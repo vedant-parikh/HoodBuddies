@@ -130,6 +130,10 @@ if(ISSET($_POST['sendMessage'])) {
         $query6->close();
     }
 }
+if (isset($_POST['submit'])) {
+    session_unset();
+    session_destroy();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
@@ -172,7 +176,7 @@ if(ISSET($_POST['sendMessage'])) {
             <div class="col-lg-4">
                 <h4 class="reg-heading">Welcome <?php echo $firstname ?>!</h4>
                 <form action="login.php" method="post">
-                    <button type="submit" class="btn bg-btn" style="float: right">Log Out</button>
+                    <button type="submit" name="logout" class="btn bg-btn" style="float: right">Log Out</button>
                 </form>
             </div>
         </div>
