@@ -389,3 +389,5 @@ input.h4{border-color: transparent; background: none; max-width: 100px;}
 /* Message Page*/
 a.cmpmsg{text-decoration: none; color: #fff;}
 a.cmpmsg:hover{text-decoration: none; color: #1abc9c;}
+.msg-display{padding: 10px; margin: 10px; background: #fcf8e3 !important;}
+.msg-display-0{padding: 10px; margin: 10px; background: #fff !important;}

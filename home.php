@@ -30,6 +30,26 @@ $query1->store_result();
 $query1->bind_result($firstname, $lastname, $gender, $address, $birthdate, $email, $phone);
 $value = $query1->fetch();
 $query1->close();
+
+if (isset($_POST['readcheck'])) {
+    $msgfrom2 = $_POST['msgfrom'];
+    $msgto2 = $_POST['msgto'];
+    $msgtime2 = $_POST['msgtime'];
+    $query56 = $mysqli->prepare('UPDATE conversation SET flag=0 WHERE msgfrom=? AND msgto=? AND msgtime LIKE ?');
+    $query56->bind_param('sss', $msgfrom2, $msgto2, $msgtime2);
+    $query56->execute();
+    $query56->close();
+
+} elseif(isset($_POST['unreadcheck'])) {
+    $msgfrom2 = $_POST['msgfrom'];
+    $msgto2 = $_POST['msgto'];
+    $msgtime2 = $_POST['msgtime'];
+    $query56 = $mysqli->prepare('UPDATE conversation SET flag=1 WHERE msgfrom=? AND msgto=? AND msgtime LIKE ?');
+    $query56->bind_param('sss', $msgfrom2, $msgto2, $msgtime2);
+    $query56->execute();
+    $query56->close();
+
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

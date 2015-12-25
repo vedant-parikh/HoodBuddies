@@ -34,11 +34,12 @@ $query2->execute();
 $query2->store_result();
 $query2->bind_result($msgfrom, $msgto, $msgtime, $msgtype, $title, $message, $flag);
 while ($query2->fetch()) {
-?>
-        <div class="row">
+   if ($flag==1) { ?>
+        <div class="row msg-display">
             <div class="col-lg-3">
-                <form action="profile.php" method="post">
+                <form action="userprofile.php" method="post">
                     <div class="msg-name">
+                        <input type="hidden" name="otheruser" value="<?php echo $msgfrom ?>">
                         <input class="h4" type="submit" name="ouserpost" value="<?php echo $msgfrom ?>">
                     </div>
                 </form>
@@ -54,10 +55,47 @@ while ($query2->fetch()) {
             <div class="col-lg-3">
                 <div class="msg-time">
                     <h5><?php echo $msgtime ?></h5>
+                    <form action="home.php" method="post">
+                        <input type="hidden" name="msgfrom" value="<?php echo $msgfrom ?>">
+                        <input type="hidden" name="msgto" value="<?php echo $msgto ?>">
+                        <input type="hidden" name="msgtime" value="<?php echo $msgtime ?>">
+                        <button type="submit" name="readcheck" class="btn bg-btn">Mark as Read</button>
+                    </form>
                 </div>
             </div>
         </div>
-    <?php
+    <?php }
+    elseif ($flag==0) { ?>
+        <div class="row msg-display-0">
+            <div class="col-lg-3">
+                <form action="userprofile.php" method="post">
+                    <div class="msg-name">
+                        <input type="hidden" name="otheruser" value="<?php echo $msgfrom ?>">
+                        <input class="h4" type="submit" name="ouserpost" value="<?php echo $msgfrom ?>">
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-6">
+                <div class="msg-text">
+                    <h4 class="title"><?php echo $title ?></h4>
+                    <hr class="menu-hr">
+                    <h5 class="text"><?php echo $message; ?></h5>
+                    <div class="margin-bottom"></div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="msg-time">
+                    <h5><?php echo $msgtime ?></h5>
+                    <form action="home.php" method="post">
+                        <input type="hidden" name="msgfrom" value="<?php echo $msgfrom ?>">
+                        <input type="hidden" name="msgto" value="<?php echo $msgto ?>">
+                        <input type="hidden" name="msgtime" value="<?php echo $msgtime ?>">
+                        <button type="submit" name="unreadcheck" class="btn bg-btn">Mark as Unread</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <?php }
 }
 $query2->close();
 ?>

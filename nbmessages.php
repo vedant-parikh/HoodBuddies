@@ -28,6 +28,8 @@ $query1->bind_result($firstname, $lastname, $gender, $address, $birthdate, $emai
 $value = $query1->fetch();
 $query1->close();
 
+
+
 $query2 = $mysqli->prepare('SELECT * FROM conversation WHERE msgto=? ORDER BY msgtime DESC');
 $query2->bind_param('s', $username);
 $query2->execute();
@@ -36,8 +38,8 @@ $query2->bind_result($msgfrom, $msgto, $msgtime, $msgtype, $title, $message, $fl
 while ($query2->fetch()) {
     if ($msgtype == 1)
         continue;
-    elseif ($msgtype == 5) { ?>
-        <div class="row">
+    elseif ($msgtype == 5 && $flag==1) { ?>
+        <div class="row msg-display">
             <div class="col-lg-3">
                 <form action="userprofile.php" method="post">
                     <div class="msg-name">
@@ -57,6 +59,43 @@ while ($query2->fetch()) {
             <div class="col-lg-3">
                 <div class="msg-time">
                     <h5><?php echo $msgtime ?></h5>
+            <form action="home.php" method="post">
+                <input type="hidden" name="msgfrom" value="<?php echo $msgfrom ?>">
+                <input type="hidden" name="msgto" value="<?php echo $msgto ?>">
+                <input type="hidden" name="msgtime" value="<?php echo $msgtime ?>">
+                <button type="submit" name="readcheck" class="btn bg-btn">Mark as Read</button>
+            </form>
+                </div>
+            </div>
+        </div>
+    <?php }
+    elseif ($msgtype == 5 && $flag==0) { ?>
+        <div class="row msg-display-0">
+            <div class="col-lg-3">
+                <form action="userprofile.php" method="post">
+                    <div class="msg-name">
+                        <input type="hidden" name="otheruser" value="<?php echo $msgfrom ?>">
+                        <input class="h4" type="submit" name="ouserpost" value="<?php echo $msgfrom ?>">
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-6">
+                <div class="msg-text">
+                    <h4 class="title"><?php echo $title ?></h4>
+                    <hr class="menu-hr">
+                    <h5 class="text"><?php echo $message; ?></h5>
+                    <div class="margin-bottom"></div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="msg-time">
+                    <h5><?php echo $msgtime ?></h5>
+                        <form action="home.php" method="post">
+                            <input type="hidden" name="msgfrom" value="<?php echo $msgfrom ?>">
+                            <input type="hidden" name="msgto" value="<?php echo $msgto ?>">
+                            <input type="hidden" name="msgtime" value="<?php echo $msgtime ?>">
+                            <button type="submit" name="unreadcheck" class="btn bg-btn">Mark as Unread</button>
+                        </form>
                 </div>
             </div>
         </div>

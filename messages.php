@@ -36,6 +36,8 @@ if (isset($_POST['submit'])) {
     session_unset();
     session_destroy();
 }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -110,7 +112,6 @@ if (isset($_POST['submit'])) {
 </body>
 <script>
     var timestamp = 0;
-    //setTimeout("location.reload(true);",5000);
     setInterval(function () {
         $.ajax({
             url: "privmessage.php",
@@ -122,5 +123,4 @@ if (isset($_POST['submit'])) {
         });
     }, 1000);
 </script>
-
 </html>
