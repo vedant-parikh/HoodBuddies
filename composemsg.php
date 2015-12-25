@@ -33,6 +33,7 @@ $query1->close();
 
 
 /*Stored Procedure:
+
 Create PROCEDURE sendmessage
 (IN mfrom VARCHAR(30), IN mto VARCHAR(30),IN mtype INT(10), IN mtitle VARCHAR(50), IN message VARCHAR(250))
 INSERT INTO `conversation`INSERT INTO `conversation` VALUES (mfrom,mto,NOW(),mtype,mtitle,message,'1');*/
