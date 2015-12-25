@@ -36,29 +36,31 @@ $query2->bind_result($msgfrom, $msgto, $msgtime, $msgtype, $title, $message, $fl
 while ($query2->fetch()) {
     if ($msgtype == 1)
         continue;
-    ?>
-    <div class="row">
-        <div class="col-lg-3">
-            <div class="msg-name">
-                <h4><a href="#"><?php echo $msgfrom ?></a></h4>
+    elseif ($msgtype == 3) { ?>
+        <div class="row">
+            <div class="col-lg-3">
+                <form action="userprofile.php" method="post">
+                    <div class="msg-name">
+                        <input type="hidden" name="otheruser" value="<?php echo $msgfrom ?>">
+                        <input class="h4" type="submit" name="ouserpost" value="<?php echo $msgfrom ?>">
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-6">
+                <div class="msg-text">
+                    <h4 class="title"><?php echo $title ?></h4>
+                    <hr class="menu-hr">
+                    <h5 class="text"><?php echo $message; ?></h5>
+                    <div class="margin-bottom"></div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="msg-time">
+                    <h5><?php echo $msgtime ?></h5>
+                </div>
             </div>
         </div>
-        <div class="col-lg-6">
-            <div class="msg-text">
-                <h4 class="title"><?php echo $title ?></h4>
-                <hr class="menu-hr">
-                <h5 class="text"><?php echo $message; ?></h5>
-                <div class="margin-bottom"></div>
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="msg-time">
-                <h5><?php echo $msgtime ?></h5>
-            </div>
-        </div>
-    </div>
-    <?php
-
+    <?php }
 }
 $query2->close();
 ?>

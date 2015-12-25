@@ -20,7 +20,24 @@ $query33->close();
 if($approvaltype!="A")
     header("location:preapproval.php");
 
-if(isset($_POST['accept'])){
+if(isset($_POST['acceptf'])){
+    $fuser1 = $_POST['fromuser1'];
+    $touser1 = $_POST['touser1'];
+    $query5 = $mysqli->prepare('UPDATE relation SET type="F" WHERE touser=? AND fromuser=?');
+    $query5->bind_param('ss', $username,$fuser1);
+    $query5->execute();
+    $query5->close();
+}
+elseif(isset($_POST['rejectf'])){
+    $fuser1 = $_POST['fromuser1'];
+    $touser1 = $_POST['touser1'];
+    $query5 = $mysqli->prepare('UPDATE relation SET type="R" WHERE touser=? AND fromuser=?');
+    $query5->bind_param('ss', $username,$fuser1);
+    $query5->execute();
+    $query5->close();
+}
+
+if(isset($_POST['acceptb'])){
     $reqid = $_POST['requestid'];
     $appusername = $_POST['appusername'];
     $query4 = $mysqli->prepare('INSERT INTO bresponse VALUES (?,?,"A")');
@@ -28,7 +45,7 @@ if(isset($_POST['accept'])){
     $query4->execute();
     $query4->close();
 }
-elseif(isset($_POST['reject'])){
+elseif(isset($_POST['rejectb'])){
     $reqid = $_POST['requestid'];
     $appusername = $_POST['appusername'];
     $query4 = $mysqli->prepare('INSERT INTO bresponse VALUES (?,?,"R")');

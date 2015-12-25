@@ -88,10 +88,18 @@ $query1->close();
             <ul class="side-menu">
                 <li><a href="pendingrequest.php">Pending Requests</a></li>
                 <li><a href="messages.php">Unread Messages</a></li>
+                <li><a id="neighborsurl">Neighbors</a></li>
+                <li><a id="blockurl">Block</a></li>
+                <li><a id="neighborhoodurl">Neighborhood</a></li>
+                <li><a id="senturl">Sent</a></li>
             </ul>
         </div>
         <div class="col-lg-9">
         <div class="message-page">
+            <div id="neighbors"></div>
+            <div id="block"></div>
+            <div id="neighborhood"></div>
+            <div id="sent"></div>
         </div>
             </div>
     </div>
@@ -102,13 +110,83 @@ $query1->close();
     //setTimeout("location.reload(true);",5000);
     setInterval(function () {
         $.ajax({
-            url: "realtime.php",
+            url: "nbmessages.php",
             type: "GET",
             dataType: "html",
             success: function (data) {
-                $('.message-page').html(data);
+                $('#neighborhood').html(data);
             }
         });
     }, 1000);
+    setInterval(function () {
+        $.ajax({
+            url: "nbmessages.php",
+            type: "GET",
+            dataType: "html",
+            success: function (data) {
+                $('#neighborhood').html(data);
+            }
+        });
+    }, 1000);
+    setInterval(function () {
+        $.ajax({
+            url: "nmessages.php",
+            type: "GET",
+            dataType: "html",
+            success: function (data) {
+                $('#neighbors').html(data);
+            }
+        });
+    }, 1000);
+    setInterval(function () {
+        $.ajax({
+            url: "bmessages.php",
+            type: "GET",
+            dataType: "html",
+            success: function (data) {
+                $('#block').html(data);
+            }
+        });
+    }, 1000);
+    setInterval(function () {
+        $.ajax({
+            url: "sent.php",
+            type: "GET",
+            dataType: "html",
+            success: function (data) {
+                $('#sent').html(data);
+            }
+        });
+    }, 1000);
+</script>
+<script>
+    $(document).ready(function() {
+    $('#neighborsurl').click(function(){
+        $('#neighbors').show();
+        $('#blocks').hide();
+        $('#neighborhood').hide();
+        $('#sent').hide();
+    }) });
+    $(document).ready(function() {
+    $('#blockurl').click(function(){
+        $('#neighbors').hide();
+        $('#blocks').show();
+        $('#neighborhood').hide();
+        $('#sent').hide();
+    }) });
+    $(document).ready(function() {
+    $('#neighborhoodurl').click(function(){
+        $('#neighbors').hide();
+        $('#blocks').hide();
+        $('#neighborhood').show();
+        $('#sent').hide();
+    }) });
+    $(document).ready(function() {
+    $('#senturl').click(function(){
+        $('#neighbors').hide();
+        $('#blocks').hide();
+        $('#neighborhood').hide();
+        $('#sent').show();
+    }) });
 </script>
 </html>

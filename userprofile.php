@@ -18,7 +18,9 @@ $query3->bind_result($firstname, $lastname, $gender, $address, $birthdate, $emai
 $value = $query3->fetch();
 $query3->close();
 
-$otheruser = 'zealdalal';
+if(isset($_POST['ouserpost'])){
+    $otheruser=$_POST['otheruser'];
+}
 if(isset($_POST['frequest'])){
     $appusername = $_POST['userprofile'];
     $query4 = $mysqli->prepare('INSERT INTO relation VALUES (?,?,"P")');
@@ -198,6 +200,7 @@ if (isset($_POST['submit'])) {
                                 <h4>You are friend of <?php echo $firstname ?></h4>
                         <?php
                         }
+
                         ?>
                 </form>
                     </div>

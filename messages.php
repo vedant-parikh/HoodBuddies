@@ -26,18 +26,6 @@ $query1->bind_result($firstname, $lastname, $gender, $address, $birthdate, $emai
 $value = $query1->fetch();
 $query1->close();
 
-$msgtype=2;
-$query2 = $mysqli->prepare('CALL fetchmessage(?,?)');
-$query2->bind_param('ss', $username, $msgtype);
-$query2->execute();
-$query2->store_result();
-$query2->bind_result($msto,$msgfrom,$msgtime,$msgtype,$title,$message,$flag);
-while($query2->fetch())
-{
-    echo $message;
-}
-$query2->close();
-
 
 if (isset($_POST['submit'])) {
     session_unset();
@@ -100,8 +88,33 @@ if (isset($_POST['submit'])) {
                 </ul>
             </div>
             <hr class="menu-hr"/>
+            <div class="col-lg-3">
+                <ul class="side-menu">
+
+                </ul>
+            </div>
+            <div class="col-lg-9">
+                <div class="message-page">
+
+                </div>
+            </div>
         </div>
     </div>
 </div>
 </body>
+<script>
+    var timestamp = 0;
+    //setTimeout("location.reload(true);",5000);
+    setInterval(function () {
+        $.ajax({
+            url: "privmessage.php",
+            type: "GET",
+            dataType: "html",
+            success: function (data) {
+                $('.message-page').html(data);
+            }
+        });
+    }, 1000);
+</script>
+
 </html>
