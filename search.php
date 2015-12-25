@@ -31,8 +31,8 @@ $query1->execute();
 $query1->store_result();
 $query1->bind_result($username, $firstname, $lastname, $email);
 
-$query2 = $mysqli->prepare('CALL textsearch(?,?)');
-$query2->bind_param('ss',$username, $keyword);
+$query2 = $mysqli->prepare('SELECT msgtime, msgfrom, title, message from conversation where msgto=? and message like ?');
+$query2->bind_param('ss',$username, $keywords);
 $query2->execute();
 $query2->store_result();
 $query2->bind_result($msgtime, $msgfrom, $title, $message);
@@ -116,7 +116,7 @@ $query4->bind_result($blk);
             <div class="col-lg-12">
             <h4>User Details Section</h4>
             <?php
-            while(!empty($query1->fetch()))
+            while($query1->fetch())
             {
             echo $firstname;
             }
@@ -128,9 +128,9 @@ $query4->bind_result($blk);
                 <div class="col-lg-12">
                     <h4>Message Section</h4>
                     <?php
-                    while(!empty($query2->fetch()))
+                    while($query2->fetch())
                     {
-                        echo $message;
+                        echo $message."<br/>";
                     }
                     $query2->close();
                     ?>
@@ -140,7 +140,7 @@ $query4->bind_result($blk);
                 <div class="col-lg-12">
                     <h4>Neighbourhood Section</h4>
                     <?php
-                    while(!empty($query3->fetch()))
+                    while($query3->fetch())
                     {
                         echo $nbr;
                     }
@@ -152,7 +152,7 @@ $query4->bind_result($blk);
                 <div class="col-lg-12">
                     <h4>Block Section</h4>
                     <?php
-                    while(!empty($query4->fetch()))
+                    while($query4->fetch())
                     {
                         echo $blk;
                     }
