@@ -98,7 +98,10 @@ $query1->close();
                 </div>
             </div>
             <div class="col-lg-4">
-                <input class="form-control nav-search" name="search" placeholder="search here...">
+                <form action="search.php" method="post">
+                    <input class="form-control nav-search" name="search" placeholder="search here...">
+                    <input type="submit" style="display:none"/>
+                </form>
             </div>
             <div class="col-lg-4">
                 <h4 class="reg-heading">Welcome <?php echo $firstname ?>!</h4>
@@ -125,7 +128,6 @@ $query1->close();
         <div class="col-lg-3">
             <ul class="side-menu">
                 <li><a href="pendingrequest.php">Pending Requests</a></li>
-                <li><a href="messages.php">Unread Messages</a></li>
             </ul>
         </div>
         <div class="col-lg-9">

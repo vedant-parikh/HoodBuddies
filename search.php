@@ -21,7 +21,8 @@ if(isset($_SESSION['username'])) {
     if ($approvaltype != "A")
         header("location:preapproval.php");
 }
-$keyword="journal";
+
+$keyword=$_POST['search'];
 $keywords='%'.$keyword.'%';
 
 $query1 = $mysqli->prepare('SELECT username, firstname, lastname, email FROM userdata WHERE username LIKE ?');

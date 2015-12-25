@@ -95,7 +95,10 @@ if (isset($_POST['submit'])) {
                 </div>
             </div>
             <div class="col-lg-4">
+                <form action="search.php" method="post">
                 <input class="form-control nav-search" name="search" placeholder="search here...">
+                <input type="submit" style="display:none"/>
+                </form>
             </div>
             <div class="col-lg-4">
                 <h4 class="reg-heading">Welcome <?php echo $firstname ?>!</h4>
