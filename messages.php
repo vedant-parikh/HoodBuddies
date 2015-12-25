@@ -26,9 +26,9 @@ $query1->bind_result($firstname, $lastname, $gender, $address, $birthdate, $emai
 $value = $query1->fetch();
 $query1->close();
 
-$msgtype=1;
+$msgtype=2;
 $query2 = $mysqli->prepare('CALL fetchmessage(?,?)');
-$query2->bind_param('si', $username, $messagetype);
+$query2->bind_param('ss', $username, $msgtype);
 $query2->execute();
 $query2->store_result();
 $query2->bind_result($msto,$msgfrom,$msgtime,$msgtype,$title,$message,$flag);
