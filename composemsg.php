@@ -42,86 +42,88 @@ $mtitle="Hi";
 $message="Hello";
 //msgtype is decided by grp msg or nbr msg or frn msg or blk msg chosen
 $msgtype=5;
+if(ISSET($_POST['sendMessage'])) {
 
-if($msgtype==1)
-{
-    $query2 = $mysqli->prepare('CALL sendmessage(?,?,?,?,?)');
-    $query2->bind_param('sssss', $username, $msgto, $msgtype, $mtitle, $message);
-    $query2->execute();
-    $query2->close();
-}
+    if($_POST['touser']=="friends")
+    $msgtype=4;
+    else if($_POST['touser']=="neighbors")
+        $msgtype=3;
+    else if($_POST['touser']=="neighborhood")
+        $msgtype=5;
+    else if(!preg_match("/([A-Za-z0-9_]{1,8})/", $username)) {
+        $Message = "Please Enter Valid Username";
+        $msgtype=0;
+    }else
+        $msgtype=1;
 
-if($msgtype==3)
-{
-    $query3 = $mysqli->prepare('SELECT fromuser, touser FROM relation WHERE fromuser=? OR touser=? AND type="N"');
-    $query3->bind_param('ss', $username, $username);
-    $query3->execute();
-    $query3->store_result();
-    $query3->bind_result($fromuser, $touser);
-    while($query3->fetch())
-    {
-       if($fromuser==$username)
-           $msgto=$touser;
-        else
-            $msgto=$fromuser;
+    if ($msgtype == 1) {
         $query2 = $mysqli->prepare('CALL sendmessage(?,?,?,?,?)');
-        $query2->bind_param('ssiss', $username, $msgto, $msgtype, $mtitle, $message);
+        $query2->bind_param('sssss', $username, $msgto, $msgtype, $mtitle, $message);
         $query2->execute();
         $query2->close();
     }
-    $query3->close();
-}
 
-if($msgtype==4)
-{
-    $query4 = $mysqli->prepare('SELECT fromuser, touser FROM relation WHERE fromuser=? OR touser=? AND type="F"');
-    $query4->bind_param('ss', $username, $username);
-    $query4->execute();
-    $query4->store_result();
-    $query4->bind_result($fromuser, $touser);
-    while($query4->fetch())
-    {
-        if($fromuser==$username)
-            $msgto=$touser;
-        else
-            $msgto=$fromuser;
-        $query5 = $mysqli->prepare('CALL sendmessage(?,?,?,?,?)');
-        $query5->bind_param('ssiss', $username, $msgto, $msgtype, $mtitle, $message);
-        $query5->execute();
-        $query5->close();
+    if ($msgtype == 3) {
+        $query3 = $mysqli->prepare('SELECT fromuser, touser FROM relation WHERE fromuser=? OR touser=? AND type="N"');
+        $query3->bind_param('ss', $username, $username);
+        $query3->execute();
+        $query3->store_result();
+        $query3->bind_result($fromuser, $touser);
+        while ($query3->fetch()) {
+            if ($fromuser == $username)
+                $msgto = $touser;
+            else
+                $msgto = $fromuser;
+            $query2 = $mysqli->prepare('CALL sendmessage(?,?,?,?,?)');
+            $query2->bind_param('ssiss', $username, $msgto, $msgtype, $mtitle, $message);
+            $query2->execute();
+            $query2->close();
+        }
+        $query3->close();
     }
-    $query4->close();
-}
 
-if($msgtype==5)
-{
-    $query8 = $mysqli->prepare('SELECT nhid FROM ubmap JOIN bnmap USING(blockid) WHERE username=?');
-    $query8->bind_param('s', $username);
-    $query8->execute();
-    $query8->store_result();
-    $query8->bind_result($nid);
-    $value8 = $query8->fetch();
-    $query8->close();
-
-    $query6 = $mysqli->prepare('SELECT username FROM ubmap LEFT OUTER JOIN bnmap USING(blockid) WHERE nhid=?');
-    $query6->bind_param('i', $nid);
-    $query6->execute();
-    $query6->store_result();
-    $query6->bind_result($touser);
-
-    while($query6->fetch())
-    {
-        $query7 = $mysqli->prepare('CALL sendmessage(?,?,?,?,?)');
-        $query7->bind_param('ssiss', $username, $touser, $msgtype, $mtitle, $message);
-        $query7->execute();
-        $query7->close();
+    if ($msgtype == 4) {
+        $query4 = $mysqli->prepare('SELECT fromuser, touser FROM relation WHERE fromuser=? OR touser=? AND type="F"');
+        $query4->bind_param('ss', $username, $username);
+        $query4->execute();
+        $query4->store_result();
+        $query4->bind_result($fromuser, $touser);
+        while ($query4->fetch()) {
+            if ($fromuser == $username)
+                $msgto = $touser;
+            else
+                $msgto = $fromuser;
+            $query5 = $mysqli->prepare('CALL sendmessage(?,?,?,?,?)');
+            $query5->bind_param('ssiss', $username, $msgto, $msgtype, $mtitle, $message);
+            $query5->execute();
+            $query5->close();
+        }
+        $query4->close();
     }
-    $query6->close();
-}
 
-if (isset($_POST['submit'])) {
-    session_unset();
-    session_destroy();
+    if ($msgtype == 5) {
+        $query8 = $mysqli->prepare('SELECT nhid FROM ubmap JOIN bnmap USING(blockid) WHERE username=?');
+        $query8->bind_param('s', $username);
+        $query8->execute();
+        $query8->store_result();
+        $query8->bind_result($nid);
+        $value8 = $query8->fetch();
+        $query8->close();
+
+        $query6 = $mysqli->prepare('SELECT username FROM ubmap LEFT OUTER JOIN bnmap USING(blockid) WHERE nhid=?');
+        $query6->bind_param('i', $nid);
+        $query6->execute();
+        $query6->store_result();
+        $query6->bind_result($touser);
+
+        while ($query6->fetch()) {
+            $query7 = $mysqli->prepare('CALL sendmessage(?,?,?,?,?)');
+            $query7->bind_param('ssiss', $username, $touser, $msgtype, $mtitle, $message);
+            $query7->execute();
+            $query7->close();
+        }
+        $query6->close();
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -181,7 +183,7 @@ if (isset($_POST['submit'])) {
             </div>
             <hr class="menu-hr"/>
             <div class="profile-page">
-                <form action="profile.php" method="post">
+                <form action="composemsg.php" method="post">
                     <div class="row">
                         <div class="col-lg-4">
                             <!-- <img id="profileimage" src="#" alt="your image" />
@@ -195,7 +197,7 @@ if (isset($_POST['submit'])) {
                                 </div>
                                 <div class="col-lg-1"><h5>:</h5></div>
                                 <div class="col-lg-9">
-                                    <input type="text" class="form-control" name="firstname" value ="<?php echo $firstname ?>" required title="address is required"/>
+                                    <input type="text" class="form-control" name="touser"  value="<?php if($msgtype==0) echo $Message; else echo "Type neighborhood, neighbors, friends or a username";?>"required title="address is required"/>
                                 </div>
                             </div>
                             <div class="row">
@@ -204,7 +206,7 @@ if (isset($_POST['submit'])) {
                                 </div>
                                 <div class="col-lg-1"><h5>:</h5></div>
                                 <div class="col-lg-9">
-                                    <input type="text" class="form-control" name="lastname" value ="<?php echo $lastname ?>" required title="address is required"/>
+                                    <input type="text" class="form-control" name="title"  required title="address is required"/>
                                 </div>
                             </div>
                             <div class="row">
@@ -213,7 +215,7 @@ if (isset($_POST['submit'])) {
                                 </div>
                                 <div class="col-lg-1"><h5>:</h5></div>
                                 <div class="col-lg-9">
-                                    <textarea type="text" class="form-control" name="address" value ="<?php echo $address ?>" required title="address is required"/></textarea>
+                                    <textarea type="text" class="form-control" name="message" required title="address is required"/></textarea>
                                 </div>
                             </div>
                             <div class="row">

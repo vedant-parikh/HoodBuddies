@@ -19,6 +19,10 @@ if (isset($_POST['submit'])) {
     $firstname = filter_var($_POST['firstname'], FILTER_SANITIZE_STRING);
     $lastname = filter_var($_POST['lastname'], FILTER_SANITIZE_STRING);
     $pass = filter_var($_POST['reg-password'], FILTER_SANITIZE_STRING);
+    if (!preg_match("/([A-Za-z0-9_]{1,8})/", $username)) {
+    $Message = $Message . "Please Enter Valid Username<br>";
+    $Flag = false;
+    }
     if (!preg_match("/([A-Z-]{1,8})([a-z-]{1,8})([0-9-]{1,8})/", $pass)) {
         $Message = $Message . "Please Enter Valid Password<br>";
         $Flag = false;
