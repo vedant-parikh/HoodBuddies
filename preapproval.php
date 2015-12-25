@@ -1,7 +1,8 @@
 <?php
 session_start();
+$link=$_SERVER['PHP_SELF'];
 if (!isset($_SESSION['username']))
-    header("location:login.php");
+    header("location:login.php?link=".$link);
 $username = $_SESSION['username'];
 $mysqli = new mysqli("localhost", "root", "", "commcon");
 //check if connection is a success

@@ -1,4 +1,9 @@
 <?php
+$url="login.php";
+if(isset($_GET['link'])) {
+    $link = $_GET['link'];
+    $url=$url."?link=".$link;
+}
 if (isset($_POST['logout'])) {
     session_start();
     session_unset();
@@ -28,7 +33,10 @@ $call2->bind_result($username, $password);
 while ($call2->fetch()) {
 if ($password == $pass) {
 $_SESSION['username'] = $username;
-header("location:home.php");
+    if(isset($_GET['link']))
+header("location:http:".$link);
+    else
+        header("location:home.php");
 break;
 } else {
 $Message = $Message . "Password does not match. Please try again";
@@ -79,7 +87,7 @@ $call2->close();
                 <div class="col-lg-12">
                     <h1 class="login-heading">Login</h1>
                     <h4 class="login-heading2" style="color:#000"><?php echo $Message;?></h4>
-                    <form action="login.php" method="post">
+                    <form action="<?php echo $url;?>" method="post">
                         <div class="form-group">
                             <input type="text" class="form-control" id="usr2" placeholder="Username" name="username">
                         </div>
