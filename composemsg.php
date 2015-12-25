@@ -37,13 +37,14 @@ $query1->close();
 Create PROCEDURE sendmessage
 (IN mfrom VARCHAR(30), IN mto VARCHAR(30),IN mtype INT(10), IN mtitle VARCHAR(50), IN message VARCHAR(250))
 INSERT INTO `conversation`INSERT INTO `conversation` VALUES (mfrom,mto,NOW(),mtype,mtitle,message,'1');*/
-$msgto="vedantparikh";
-$mtitle="Hi";
-$message="Hello";
+
+
 //msgtype is decided by grp msg or nbr msg or frn msg or blk msg chosen
 $msgtype=5;
 if(ISSET($_POST['sendMessage'])) {
-
+    $msgto=$_POST['touser'];
+    $mtitle=$_POST['title'];
+    $message=$_POST['message'];
     if($_POST['touser']=="friends")
     $msgtype=4;
     else if($_POST['touser']=="neighbors")
@@ -55,7 +56,7 @@ if(ISSET($_POST['sendMessage'])) {
         $msgtype=0;
     }else
         $msgtype=1;
-
+    echo $msgtype;
     if ($msgtype == 1) {
         $query2 = $mysqli->prepare('CALL sendmessage(?,?,?,?,?)');
         $query2->bind_param('sssss', $username, $msgto, $msgtype, $mtitle, $message);

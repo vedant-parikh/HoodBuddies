@@ -29,7 +29,7 @@ $query1 = $mysqli->prepare('SELECT username, firstname, lastname, email FROM use
 $query1->bind_param('s',$keywords);
 $query1->execute();
 $query1->store_result();
-$query1->bind_result($username, $firstname, $lastname, $email);
+$query1->bind_result($username1, $firstname, $lastname, $email);
 
 $query2 = $mysqli->prepare('SELECT msgtime, msgfrom, title, message from conversation where msgto=? and message like ?');
 $query2->bind_param('ss',$username, $keywords);
@@ -84,10 +84,13 @@ $query4->bind_result($blk);
                 </div>
             </div>
             <div class="col-lg-4">
-                <input class="form-control nav-search" name="search" placeholder="search here...">
+                <form action="search.php" method="post">
+                    <input class="form-control nav-search" name="search" placeholder="search here...">
+                    <input type="submit" style="display:none"/>
+                </form>
             </div>
             <div class="col-lg-4">
-                <h4 class="reg-heading">Welcome <?php echo $firstname ?>!</h4>
+                <h4 class="reg-heading">Welcome <?php echo $username ?>!</h4>
                 <form action="login.php" method="post">
                     <button type="submit" class="btn bg-btn" name="logout" style="float: right">Log Out</button>
                 </form>
@@ -118,7 +121,12 @@ $query4->bind_result($blk);
             <?php
             while($query1->fetch())
             {
-            echo $firstname;
+            echo "<div class='row'> <div class='col-lg-3'><form action=\"userprofile.php\" method=\"post\">
+                    <div class=\"msg-name\">
+                        <input type=\"hidden\" name=\"otheruser\" value=\"$username1\">
+                        <input class=\"h4\" type=\"submit\" name=\"ouserpost\" value=\"$username1\">
+                    </div>
+                </form></div><div class='col-lg-9'></div></div>";
             }
             $query1->close();
             ?>
@@ -130,12 +138,35 @@ $query4->bind_result($blk);
                     <?php
                     while($query2->fetch())
                     {
-                        echo $message."<br/>";
-                    }
+                    ?>
+                    <div class="row">
+                        <div class="col-lg-3">
+                    <form action="userprofile.php" method="post">
+                    <div class="msg-name">
+                        <input type="hidden" name="otheruser" value="<?php echo $msgfrom ?>">
+                        <input class="h4" type="submit" name="ouserpost" value="<?php echo $msgfrom ?>">
+                    </div>
+                </form>
+                        </div>
+            <div class="col-lg-6">
+                <div class="msg-text">
+                    <h4 class="title"><?php echo $title ?></h4>
+                    <hr class="menu-hr">
+                    <h5 class="text"><?php echo $message; ?></h5>
+                    <div class="margin-bottom"></div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="msg-time">
+                    <h5><?php echo $msgtime ?></h5>
+                </div>
+            </div>
+        </div>
+               <?php     }
                     $query2->close();
                     ?>
                 </div>
-            </div>
+                </div>
             <div class="user-details">
                 <div class="col-lg-12">
                     <h4>Neighbourhood Section</h4>
