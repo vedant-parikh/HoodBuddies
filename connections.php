@@ -124,7 +124,12 @@ if (isset($_POST['submit'])) {
                 if($friend==NULL)
                     echo "You Have No Friends :(";
                 elseif($friend!=false)
-                    echo "<div class='row'> <div class='col-lg-3'><div class='msg-name'>".$friend."</div></div><div class='col-lg-9'></div></div>";?>
+                    echo "<div class='row'> <div class='col-lg-3'><form action=\"userprofile.php\" method=\"post\">
+                    <div class=\"msg-name\">
+                        <input type=\"hidden\" name=\"otheruser\" value=\"$friend\">
+                        <input class=\"h4\" type=\"submit\" name=\"ouserpost\" value=\"$friend\">
+                    </div>
+                </form></div><div class='col-lg-9'></div></div>";?>
                     <?php
                 }
                 $query2->close();
@@ -142,7 +147,12 @@ if (isset($_POST['submit'])) {
                     if($nbrs==NULL)
                         echo "You Have No Neighbors :(";
                     elseif($nbrs!=false)
-                        echo "<div class='row'> <div class='col-lg-3'><div class='msg-name'>".$nbrs."</div></div><div class='col-lg-9'></div></div>";
+                        echo "<div class='row'> <div class='col-lg-3'><form action=\"userprofile.php\" method=\"post\">
+                    <div class=\"msg-name\">
+                        <input type=\"hidden\" name=\"otheruser\" value=\"$nbrs\">
+                        <input class=\"h4\" type=\"submit\" name=\"ouserpost\" value=\"$nbrs\">
+                    </div>
+                </form></div><div class='col-lg-9'></div></div>";
                         ?>
                     <?php
                 }
