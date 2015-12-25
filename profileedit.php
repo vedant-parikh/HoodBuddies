@@ -104,13 +104,14 @@ if (isset($_POST['submit'])) {
             </div>
             <hr class="menu-hr"/>
             <div class="profile-page">
-                <form action="profile.php" method="post">
                 <div class="row">
                     <div class="col-lg-4">
-                        <!-- <img id="profileimage" src="#" alt="your image" />
-                         <input type='file' onchange="readURL(this);" /> -->
+                        <form action="blockapply.php" method="post">
+                            <button type="submit" class="btn bg-btn" name="bapply">Change Block</button>
+                        </form>
 
                     </div>
+                    <form action="profile.php" method="post">
                     <div class="col-lg-8">
                         <div class="row">
                         <div class="col-lg-2">
@@ -148,7 +149,7 @@ if (isset($_POST['submit'])) {
                         </div>
                         <div class="col-lg-1"><h5>:</h5></div>
                         <div class="col-lg-9">
-                            <input type="text" class="form-control" name="address" value ="<?php echo $address ?>" required title="address is required"/>
+                            <h5 class="profile-param"><?php echo $address ?></h5>
                         </div>
                             </div>
                         <div class="row">
@@ -158,7 +159,7 @@ if (isset($_POST['submit'])) {
                         <div class="col-lg-1"><h5>:</h5></div>
                         <div class="col-lg-9">
                             <input type="text" class="form-control" id="birthdate" name="birthdate"
-                                   placeholder="<?php echo $birthdate ?>" autofocus required title="Birthdate is required">
+                                   placeholder="<?php echo $birthdate ?>" >
                         </div>
                             </div>
                         <div class="row">
