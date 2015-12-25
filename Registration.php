@@ -10,6 +10,8 @@ if (isset($_POST['submit'])) {
     $address = str_replace(" ", "+", $db_address);
     $block = $_POST['block'];
     $hood = $_POST['neighbor'];
+    $lat = $_POST['lat'];
+    $long = $_POST['long'];
     $username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
     $email = filter_var($_POST['reg-email'], FILTER_SANITIZE_EMAIL);
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -105,7 +107,7 @@ if (isset($_POST['submit'])) {
             $call12->execute();
             $call12->close();
         }
-
+        
         $call24 = $mysqli->prepare('INSERT INTO latlong VALUES (?,?,?)');
         $call24->bind_param('sss', $username, $lat, $long);
         $call24->execute();

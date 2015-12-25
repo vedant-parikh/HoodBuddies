@@ -48,14 +48,6 @@ $longrangen = $longrange + 10;
 $latranges = $latrange - 10;
 $longranges = $longrange - 10;
 
-$query3=$mysqli->prepare('SELECT latitude,longitude FROM userdata WHERE username=?');
-$query3->bind_param('s', $username);
-$query3->execute();
-$query3->store_result();
-$query3->bind_result($firstname,$lastname,$gender,$address,$birthdate,$email,$phone);
-$value =  $query3->fetch();
-$query3->close();
-
 if(isset($_POST['submit']))
 {
     session_unset();

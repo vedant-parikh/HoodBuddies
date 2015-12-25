@@ -10,11 +10,11 @@ if (mysqli_connect_errno()) {
     die("Connection to database error:" . mysqli_connect_error() . "(" . mysqli_connect_errno() . ")");
 }
 
-$query1 = $mysqli->prepare('SELECT firstname FROM userdata WHERE username=?');
+$query1 = $mysqli->prepare('SELECT firstname,email FROM userdata WHERE username=?');
 $query1->bind_param('s', $username);
 $query1->execute();
 $query1->store_result();
-$query1->bind_result($firstname);
+$query1->bind_result($firstname,$email);
 $value = $query1->fetch();
 $query1->close();
 
@@ -64,6 +64,17 @@ if($counappr==$totmem ||$counappr>=3)
     $query6->bind_param('si', $username, $blockid);
     $query6->execute();
     $query6->close();
+
+    /* Email Notification
+    $subject="Request Approval";
+    $body="Your Request Has been Approved";
+    $from = "info@hoodbuddies.com"
+    if(mail($email,$subject,$body,$from)){
+        $result='<div class="block">You have received a request!</dvi>';
+    else{
+        $result='<div class="block">Error!</dvi>';
+    };
+    */
 
     header("location:home.php");
 }

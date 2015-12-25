@@ -44,7 +44,11 @@ $msgtype=5;
 if(ISSET($_POST['sendMessage'])) {
     $msgto=$_POST['touser'];
     $mtitle=$_POST['title'];
+    $mtitle = filter_var($mtitle, FILTER_SANITIZE_STRING);
     $message=$_POST['message'];
+    $message = filter_var($message, FILTER_SANITIZE_STRING);
+
+
     if($_POST['touser']=="friends")
     $msgtype=4;
     else if($_POST['touser']=="neighbors")
@@ -56,7 +60,7 @@ if(ISSET($_POST['sendMessage'])) {
         $msgtype=0;
     }else
         $msgtype=1;
-    echo $msgtype;
+
     if ($msgtype == 1) {
         $query2 = $mysqli->prepare('CALL sendmessage(?,?,?,?,?)');
         $query2->bind_param('sssss', $username, $msgto, $msgtype, $mtitle, $message);
@@ -201,7 +205,7 @@ if(ISSET($_POST['sendMessage'])) {
                                 </div>
                                 <div class="col-lg-1"><h5>:</h5></div>
                                 <div class="col-lg-9">
-                                    <input type="text" class="form-control" name="touser"  value="<?php if($msgtype==0) echo $Message; else echo "Type neighborhood, neighbors, friends or a username";?>"required title="address is required"/>
+                                    <input type="text" class="form-control" style="width: 400px;" name="touser"  placeholder="<?php if($msgtype==0) echo $Message; else echo "Type neighborhood, neighbors, friends or a username";?>"required title="address is required"/>
                                 </div>
                             </div>
                             <div class="row">
@@ -210,7 +214,7 @@ if(ISSET($_POST['sendMessage'])) {
                                 </div>
                                 <div class="col-lg-1"><h5>:</h5></div>
                                 <div class="col-lg-9">
-                                    <input type="text" class="form-control" name="title"  required title="address is required"/>
+                                    <input type="text" class="form-control" name="title" style="width: 400px;" required title="address is required"/>
                                 </div>
                             </div>
                             <div class="row">
