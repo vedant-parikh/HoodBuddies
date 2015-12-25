@@ -14,7 +14,6 @@ if (isset($_POST['finalsubmit'])) {
     $address = str_replace(" ", "+", $db_address);
     $block = $_POST['block'];
     $hood = $_POST['neighbor'];
-    $username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
     $mysqli = new mysqli("localhost", "root", "", "commcon");
 
 
@@ -83,13 +82,15 @@ if (isset($_POST['finalsubmit'])) {
             $call12->close();
         }
 
-
+        $call = $mysqli->prepare('INSERT INTO brequest(fromuser,blockid,approvaltype) VALUES(?,?,"P")');
+        $call->bind_param('ss', $username, $blockid);
+        $call->execute();
+        $call->store_result();
         if($mysqli->query('INSERT INTO brequest(fromuser,blockid,approvaltype) VALUES("'.$username.'","'.$blockid.'","P")')===TRUE)
         $Message = $Message . $username . $blockid ;
         //$call14->bind_param('si', $username, $blockid);
        // $call14->execute();
         //$call14->close();
-
 
         if (!$call->execute()) {
             echo "CALL failed: (" . $mysqli->errno . ") " . $mysqli->error;
