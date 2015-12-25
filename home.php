@@ -91,7 +91,6 @@ $query1->close();
         <div class="col-lg-3">
             <ul class="side-menu">
                 <li><a href="pendingrequest.php">Pending Requests</a></li>
-                <li><a href="messages.php">Unread Messages</a></li>
                 <li><a id="neighborsurl">Neighbors</a></li>
                 <li><a id="blockurl">Block</a></li>
                 <li><a id="neighborhoodurl">Neighborhood</a></li>
