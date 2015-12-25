@@ -27,6 +27,8 @@ $query1->bind_result($firstname,$lastname,$gender,$address,$birthdate,$email,$ph
 $value =  $query1->fetch();
 $query1->close();
 
+
+
 if(isset($_POST['submit']))
 {
     session_unset();
