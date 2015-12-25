@@ -153,7 +153,7 @@ if(ISSET($_POST['sendMessage'])) {
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="" href="index.php"><img class="logo-img" src="images/hoodicon.png"
+                    <a class="" href="home.php"><img class="logo-img" src="images/hoodicon.png"
                                                       style="max-width: 50px; display: block; margin: 10px 0;"
                                                       alt="Logo"><h4 class="logo-text">HoodBuddies</h4></a>
                 </div>

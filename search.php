@@ -30,44 +30,24 @@ $query1->bind_param('s',$keywords);
 $query1->execute();
 $query1->store_result();
 $query1->bind_result($username, $firstname, $lastname, $email);
-while($query1->fetch())
-{
-    echo $firstname;
-}
-$query1->close();
 
 $query2 = $mysqli->prepare('CALL textsearch(?,?)');
 $query2->bind_param('ss',$username, $keyword);
 $query2->execute();
 $query2->store_result();
 $query2->bind_result($msgtime, $msgfrom, $title, $message);
-while($query2->fetch())
-{
-    echo $message;
-}
-$query2->close();
 
 $query3 = $mysqli->prepare('SELECT neighborhood FROM neighborhood WHERE neighborhood LIKE ?');
 $query3->bind_param('s', $keywords);
 $query3->execute();
 $query3->store_result();
 $query3->bind_result($nbr);
-while($query3->fetch())
-{
-    echo $nbr;
-}
-$query3->close();
 
 $query4 = $mysqli->prepare('SELECT blockname FROM block WHERE blockname LIKE ?');
 $query4->bind_param('s', $keywords);
 $query4->execute();
 $query4->store_result();
 $query4->bind_result($blk);
-while($query4->fetch())
-{
-    echo $blk;
-}
-$query4->close();
 
 
 ?>
@@ -98,7 +78,7 @@ $query4->close();
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="" href="index.php"><img class="logo-img" src="images/hoodicon.png"
+                    <a class="" href="home.php"><img class="logo-img" src="images/hoodicon.png"
                                                       style="max-width: 50px; display: block; margin: 10px 0;"
                                                       alt="Logo"><h4 class="logo-text">HoodBuddies</h4></a>
                 </div>
@@ -119,7 +99,7 @@ $query4->close();
         <div class="row">
             <div id='cssmenu'>
                 <ul>
-                    <li class='active'><a href='#'>Home</a></li>
+                    <li><a href='home.php'>Home</a></li>
                     <li><a href='profile.php'>Profile</a></li>
                     <li><a href='connections.php'>Connections</a></li>
                     <li><a href='maps.php'>Map</a></li>
@@ -129,15 +109,60 @@ $query4->close();
             <hr class="menu-hr"/>
         </div>
         <div class="col-lg-3">
-            <ul class="side-menu">
-                <li><a href="pendingrequest.php">Pending Requests</a></li>
-                <li><a href="messages.php">Unread Messages</a></li>
-            </ul>
         </div>
         <div class="col-lg-9">
         <div class="message-page">
-        </div>
+        <div class="user-details">
+            <div class="col-lg-12">
+            <h4>User Details Section</h4>
+            <?php
+            while(!empty($query1->fetch()))
+            {
+            echo $firstname;
+            }
+            $query1->close();
+            ?>
             </div>
+        </div>
+            <div class="user-details">
+                <div class="col-lg-12">
+                    <h4>Message Section</h4>
+                    <?php
+                    while(!empty($query2->fetch()))
+                    {
+                        echo $message;
+                    }
+                    $query2->close();
+                    ?>
+                </div>
+            </div>
+            <div class="user-details">
+                <div class="col-lg-12">
+                    <h4>Neighbourhood Section</h4>
+                    <?php
+                    while(!empty($query3->fetch()))
+                    {
+                        echo $nbr;
+                    }
+                    $query3->close();
+                    ?>
+                </div>
+            </div>
+            <div class="user-details">
+                <div class="col-lg-12">
+                    <h4>Block Section</h4>
+                    <?php
+                    while(!empty($query4->fetch()))
+                    {
+                        echo $blk;
+                    }
+                    $query4->close();
+                    ?>
+                </div>
+            </div>
+            </div>
+    </div>
+        </div>
     </div>
 </body>
 </html>
