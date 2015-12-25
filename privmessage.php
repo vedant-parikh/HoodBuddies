@@ -58,7 +58,7 @@ if ($flag==1) { ?>
             <div class="col-lg-3">
                 <div class="msg-time">
                     <h5><?php echo $msgtime ?></h5>
-                    <form action="home.php" method="post">
+                    <form action="messages.php" method="post">
                         <input type="hidden" name="msgfrom" value="<?php echo $msgfrom ?>">
                         <input type="hidden" name="msgto" value="<?php echo $msgto ?>">
                         <input type="hidden" name="msgtime" value="<?php echo $msgtime ?>">
@@ -89,7 +89,7 @@ if ($flag==1) { ?>
             <div class="col-lg-3">
                 <div class="msg-time">
                     <h5><?php echo $msgtime ?></h5>
-                    <form action="home.php" method="post">
+                    <form action="messages.php" method="post">
                         <input type="hidden" name="msgfrom" value="<?php echo $msgfrom ?>">
                         <input type="hidden" name="msgto" value="<?php echo $msgto ?>">
                         <input type="hidden" name="msgtime" value="<?php echo $msgtime ?>">
