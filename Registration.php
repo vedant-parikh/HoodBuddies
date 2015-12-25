@@ -106,6 +106,11 @@ if (isset($_POST['submit'])) {
             $call12->close();
         }
 
+        $call24 = $mysqli->prepare('INSERT INTO latlong VALUES (?,?,?)');
+        $call24->bind_param('sss', $username, $lat, $long);
+        $call24->execute();
+        $call24->close();
+
         $call = $mysqli->prepare('call usersignup(?,?,?,?,?,?,?,?,?)');
         $call->bind_param('ssssssssi', $username, $firstname, $lastname, $pass, $gender, $db_address, $birthdate, $email, $mobile);
 
@@ -114,7 +119,6 @@ if (isset($_POST['submit'])) {
         //$call14->bind_param('si', $username, $blockid);
        // $call14->execute();
         //$call14->close();
-
 
         if (!$call->execute()) {
             echo "CALL failed: (" . $mysqli->errno . ") " . $mysqli->error;
@@ -228,6 +232,12 @@ if (isset($_POST['submit'])) {
                             <input type="hidden" class="form-control" id="neighbor" name="neighbor">
                         </div>
                         <div class="form-group">
+                            <input type="hidden" class="form-control" id="lat" name="lat">
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" class="form-control" id="long" name="long">
+                        </div>
+                        <div class="form-group">
                             <button type="submit" name="submit" class="btn bg-btn">Apply!</button>
                         </div>
                     </form>
@@ -265,9 +275,13 @@ if (isset($_POST['submit'])) {
 
         // Set the variables from the results array
         var block = json.results[0].address_components[0].long_name + ' and ' + json.results[0].address_components[1].long_name;
+        var lat = json.results[0].geometry.location.lat;
+        var long = json.results[0].geometry.location.lng;
         var neighborhood = json.results[0].address_components[2].long_name;
         document.getElementById("block1").value = block;
         document.getElementById("neighbor").value = neighborhood;
+        document.getElementById("lat").value = lat;
+        document.getElementById("long").value = long;
         //$('#neighbor').html(neighborhood);
         console.log(block);
 
