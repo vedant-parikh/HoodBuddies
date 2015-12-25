@@ -26,14 +26,13 @@ if(isset($_POST['profileupdate'])){
     $fname = $_POST['firstname'];
     $lname = $_POST['lastname'];
     $gen = $_POST['sex'];
-    $add = $_POST['address'];
     $bdate = $_POST['birthdate'];
     $emadd = $_POST['email'];
     $ph = $_POST['phone'];
     $finfo = $_POST['familyinfo'];
     $edu = $_POST['education'];
-    $query3 = $mysqli->prepare('UPDATE userdata SET firstname=?,lastname=?,gender=?,address=?,birthdate=?,email=?,phone=? WHERE username =?');
-    $query3->bind_param('ssssssss', $fname, $lname, $gen, $add, $bdate, $emadd, $ph, $username);
+    $query3 = $mysqli->prepare('UPDATE userdata SET firstname=?,lastname=?,gender=?,birthdate=?,email=?,phone=? WHERE username =?');
+    $query3->bind_param('sssssss', $fname, $lname, $gen, $bdate, $emadd, $ph, $username);
     $query3->execute();
     $query3->close();
     $query4 = $mysqli->prepare('UPDATE profile SET familyinfo=?,education=? WHERE username =?');
