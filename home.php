@@ -15,7 +15,7 @@ $query33->store_result();
 $query33->bind_result($approvaltype);
 $value33 = $query33->fetch();
 $query33->close();
-
+//jsk
 if($approvaltype!="A")
     header("location:preapproval.php");
 
