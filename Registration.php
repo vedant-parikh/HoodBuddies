@@ -112,13 +112,6 @@ if (isset($_POST['submit'])) {
         //$call14->close();
 
 
-<<<<<<< Updated upstream
-        $call = $mysqli->prepare('call usersignup(?,?,?,?,?,?,?,?,?)');
-        $call->bind_param('sssssssss', $username, $firstname, $lastname, $pass, $gender, $db_address, $birthdate, $email, $mobile);
-=======
-
->>>>>>> Stashed changes
-
         if (!$call->execute()) {
             echo "CALL failed: (" . $mysqli->errno . ") " . $mysqli->error;
         } else {
