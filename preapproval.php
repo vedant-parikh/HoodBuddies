@@ -16,6 +16,58 @@ $query1->store_result();
 $query1->bind_result($firstname);
 $value = $query1->fetch();
 $query1->close();
+
+$query2 = $mysqli->prepare('SELECT requestid FROM brequest WHERE fromuser=?');
+$query2->bind_param('s', $username);
+$query2->execute();
+$query2->store_result();
+$query2->bind_result($rid);
+$valu2 = $query2->fetch();
+$query2->close();
+
+$query3 = $mysqli->prepare('CALL totalblockmembers(?)');
+$query3->bind_param('i', $rid);
+$query3->execute();
+$query3->store_result();
+$query3->bind_result($totmem);
+$valu3 = $query3->fetch();
+$query3->close();
+
+$query4 = $mysqli->prepare('CALL checkapproval(?)');
+$query4->bind_param('i', $rid);
+$query4->execute();
+$query4->store_result();
+$query4->bind_result($counappr);
+$valu4 = $query4->fetch();
+$query4->close();
+
+if($counappr==$totmem ||$counappr>=3)
+{
+    $query5 = $mysqli->prepare('UPDATE brequest SET approvaltype="A" WHERE requestid=?');
+    $query5->bind_param('i', $rid);
+    $query5->execute();
+    $query5->store_result();
+    $query5->bind_result($counappr);
+    $valu5 = $query5->fetch();
+    $query5->close();
+
+    $query7 = $mysqli->prepare('SELECT blockid FROM brequest WHERE requestid=?');
+    $query7->bind_param('i', $rid);
+    $query7->execute();
+    $query7->store_result();
+    $query7->bind_result($blockid);
+    $valu7 = $query7->fetch();
+    $query7->close();
+
+    $query6 = $mysqli->prepare('INSERT INTO ubmap VALUES(?,?)');
+    $query6->bind_param('si', $username, $blockid);
+    $query6->execute();
+    $query6->close();
+
+    header("location:home.php");
+}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

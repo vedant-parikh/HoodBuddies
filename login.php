@@ -4,10 +4,11 @@ if (isset($_POST['logout'])) {
     session_unset();
     session_destroy();
 }
-else if (isset($_POST['login'])) {
+$Message = "";
+if (isset($_POST['login'])) {
     session_start();
 $Flag = true;
-$Message = "";
+
 $username = filter_var($_POST['username'], FILTER_SANITIZE_STRING);
 $pass = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
 if (!preg_match("/([A-Z-]{1,8})([a-z-]{1,8})([0-9-]{1,8})/", $pass)) {
@@ -37,8 +38,6 @@ break;
 } else {
 $Message = $Message . "No user record found. Please Sign-Up";
 }
-
-
 $call2->close();
 }
 ?>
@@ -79,7 +78,8 @@ $call2->close();
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="login-heading">Login</h1>
-                    <form action="home.php" method="post">
+                    <h4 class="login-heading2" style="color:#000"><?php echo $Message;?></h4>
+                    <form action="login.php" method="post">
                         <div class="form-group">
                             <input type="text" class="form-control" id="usr2" placeholder="Username" name="username">
                         </div>

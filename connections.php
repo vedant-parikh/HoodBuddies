@@ -6,6 +6,16 @@ $mysqli = new mysqli("localhost", "root", "", "commcon");
 if (mysqli_connect_errno()) {
     die("Connection to database error:" . mysqli_connect_error() . "(" . mysqli_connect_errno() . ")");
 }
+$query33 = $mysqli->prepare('SELECT approvaltype FROM brequest WHERE fromuser=?');
+$query33->bind_param('s', $_SESSION['username']);
+$query33->execute();
+$query33->store_result();
+$query33->bind_result($approvaltype);
+$value33 = $query33->fetch();
+$query33->close();
+
+if($approvaltype!="A")
+    header("location:preapproval.php");
 
 $query1 = $mysqli->prepare('SELECT firstname,lastname,gender,address,birthdate,email,phone FROM userdata WHERE username=?');
 $query1->bind_param('s', $username);
@@ -14,6 +24,23 @@ $query1->store_result();
 $query1->bind_result($firstname, $lastname, $gender, $address, $birthdate, $email, $phone);
 $value = $query1->fetch();
 $query1->close();
+
+$query2 = $mysqli->prepare('CALL listfrns(?)');
+$query2->bind_param('s',$username);
+$query2->execute();
+$query2->store_result();
+$query2->bind_result($fromuser, $touser);
+while($query2->fetch())
+{
+    if($fromuser!=$username)
+    $friend=$fromuser;
+    else
+        $friend=$touser;
+
+    echo $friend;
+}
+$query2->close();
+
 
 if (isset($_POST['submit'])) {
     session_unset();

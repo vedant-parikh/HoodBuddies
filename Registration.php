@@ -102,16 +102,22 @@ if (isset($_POST['submit'])) {
             $call12->close();
         }
 
-        $call14 = $mysqli->query('INSERT INTO brequest (fromuser, blockid, approvaltype) VALUES ("' . $username . '",' . $blockid . ',"P")');
-        $approval = 'P';
-        $Message = $Message . $username . $blockid . $approval;
-        //$call14->bind_param('sis', $username, $blockid, $approval);
-        //$call14->execute();
+        $call = $mysqli->prepare('call usersignup(?,?,?,?,?,?,?,?,?)');
+        $call->bind_param('ssssssssi', $username, $firstname, $lastname, $pass, $gender, $db_address, $birthdate, $email, $mobile);
+
+        if($mysqli->query('INSERT INTO brequest(fromuser,blockid,approvaltype) VALUES("'.$username.'","'.$blockid.'","P")')===TRUE)
+        $Message = $Message . $username . $blockid ;
+        //$call14->bind_param('si', $username, $blockid);
+       // $call14->execute();
         //$call14->close();
 
 
+<<<<<<< Updated upstream
         $call = $mysqli->prepare('call usersignup(?,?,?,?,?,?,?,?,?)');
         $call->bind_param('sssssssss', $username, $firstname, $lastname, $pass, $gender, $db_address, $birthdate, $email, $mobile);
+=======
+
+>>>>>>> Stashed changes
 
         if (!$call->execute()) {
             echo "CALL failed: (" . $mysqli->errno . ") " . $mysqli->error;
