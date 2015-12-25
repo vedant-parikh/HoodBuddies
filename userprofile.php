@@ -1,7 +1,8 @@
 <?php
 session_start();
+$link=$_SERVER['PHP_SELF'];
 if (!isset($_SESSION['username']))
-    header("location:login.php");
+    header("location:login.php?link=".$link);
 $username = $_SESSION['username'];
 $mysqli = new mysqli("localhost", "root", "", "commcon");
 
@@ -10,6 +11,20 @@ $mysqli = new mysqli("localhost", "root", "", "commcon");
 if (mysqli_connect_errno()) {
     die("Connection to database error:" . mysqli_connect_error() . "(" . mysqli_connect_errno() . ")");
 }
+
+if(isset($_SESSION['username'])) {
+    $query33 = $mysqli->prepare('SELECT approvaltype FROM brequest WHERE fromuser=?');
+    $query33->bind_param('s', $_SESSION['username']);
+    $query33->execute();
+    $query33->store_result();
+    $query33->bind_result($approvaltype);
+    $value33 = $query33->fetch();
+    $query33->close();
+
+    if ($approvaltype != "A")
+        header("location:preapproval.php");
+}
+
 $query3 = $mysqli->prepare('SELECT firstname,lastname,gender,address,birthdate,email,phone FROM userdata WHERE username=?');
 $query3->bind_param('s', $username);
 $query3->execute();
