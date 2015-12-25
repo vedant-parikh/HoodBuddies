@@ -109,8 +109,8 @@ if (isset($_POST['submit'])) {
         $call = $mysqli->prepare('call usersignup(?,?,?,?,?,?,?,?,?)');
         $call->bind_param('ssssssssi', $username, $firstname, $lastname, $pass, $gender, $db_address, $birthdate, $email, $mobile);
 
-        if($mysqli->query('INSERT INTO brequest(fromuser,blockid,approvaltype) VALUES("'.$username.'","'.$blockid.'","P")')===TRUE)
-        $Message = $Message . $username . $blockid ;
+        //$mysqli->query('INSERT INTO brequest(fromuser,blockid,approvaltype) VALUES ("'.$username.'","'.$blockid.'","P")');
+        //$Message = $Message . $username . $blockid ;
         //$call14->bind_param('si', $username, $blockid);
        // $call14->execute();
         //$call14->close();
@@ -122,7 +122,7 @@ if (isset($_POST['submit'])) {
             unset($_SESSION['address']);
             $Message = $Message . "Registeration Successful";
             $_SESSION['username'] = $username;
-            //header("location:preapproval.php");
+            header("location:intermediate.php?blockid='.$blockid.'");
         }
         $call->close();
     }
